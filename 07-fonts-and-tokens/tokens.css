@@ -1,0 +1,34 @@
+:root{
+  --atu-caramel: #D9803A;
+  --atu-caramel-light: #E8954F;
+  --atu-ink: #0E0E10;
+  --atu-ink-2: #18181B;
+  --atu-paper: #F7F7F8;
+  --atu-cream: #FFFDF9;
+  --atu-white: #FFFFFF;
+  --atu-navy: #1F2D4F;
+  --atu-idle: #A1A1AA;
+  --atu-working: #E8954F;
+  --atu-done: #3FB950;
+  --atu-offline: #71717A;
+  --app-ui-light-background: #F7F7F8;
+  --app-ui-light-surface: #FFFFFF;
+  --app-ui-light-text: #18181B;
+  --app-ui-light-dim: #4F4F58;
+  --app-ui-light-faint: #74747E;
+  --app-ui-light-border: #DEDEE3;
+  --app-ui-light-bubble: #E3EDF8;
+  --app-ui-light-tab-selection: #D97757;
+  --app-ui-light-green: #218739;
+  --app-ui-light-red: #D14343;
+  --app-ui-dark-background: #0E0E10;
+  --app-ui-dark-surface: #1A1A1E;
+  --app-ui-dark-text: #ECECF1;
+  --app-ui-dark-dim: #ADADB8;
+  --app-ui-dark-faint: #81818C;
+  --app-ui-dark-border: #2E2E35;
+  --app-ui-dark-bubble: #2B3A4D;
+  --app-ui-dark-tab-selection: #D97757;
+  --app-ui-dark-green: #3FB950;
+  --app-ui-dark-red: #E5534B;
+}

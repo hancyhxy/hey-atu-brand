@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hey Atu · adaptive icon foreground, 108dp, logo inside the 66dp safe zone · generated from the brand kit geometry -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+  <group android:translateX="25.565" android:translateY="32.403" android:scaleX="0.06587" android:scaleY="0.06587">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M721.53 498.31A303.51 334.82 33.59 1 1 215.89 162.46A303.51 334.82 33.59 1 1 721.53 498.31Z"/>
+    <group>
+      <clip-path android:pathData="M721.53 498.31A303.51 334.82 33.59 1 1 215.89 162.46A303.51 334.82 33.59 1 1 721.53 498.31Z"/>
+      <path android:fillColor="#FFD9803A" android:pathData="M839.48 278.25A185.96 244.67 19.68 1 1 489.29 152.98A185.96 244.67 19.68 1 1 839.48 278.25Z"/>
+    </group>
+    <path android:fillColor="#FFD9803A" android:pathData="M699.66 391.35A80.08 207.95 171.24 1 1 857.95 366.95A80.08 207.95 171.24 1 1 699.66 391.35Z"/>
+    <path android:fillColor="#FFD9803A" android:pathData="M236.29 236.35A102.18 208.97 45.42 1 1 92.87 90.79A102.18 208.97 45.42 1 1 236.29 236.35Z"/>
+    <path android:fillColor="#FF0E0E10" android:pathData="M423.39 321.45A35.25 60.60 0.00 1 1 352.89 321.45A35.25 60.60 0.00 1 1 423.39 321.45Z"/>
+    <path android:fillColor="#FF0E0E10" android:pathData="M591.87 321.34A35.25 60.60 0.00 1 1 521.37 321.34A35.25 60.60 0.00 1 1 591.87 321.34Z"/>
+  </group>
+</vector>

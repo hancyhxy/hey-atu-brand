@@ -1,0 +1,54 @@
+# Hey Atu 品牌交付包 v1.0（2026-10）
+
+先打开 **`Hey-Atu-Brand-Guidelines.html`**，PDF 版是同一份内容。规范共 15 节，只写我们自己的视觉系统：Logo、色彩、字体、图形、图像、图标、应用商店和宣发物料。
+
+外部调研单独放在 **`00-research/Hey-Atu-Research.html`**，包括科技 / Agent 公司的视觉调研、上架渠道调研和资料来源，仅供内部参考。
+
+## 上架渠道
+
+Android 和 Google Play 的关系、一共有哪几个渠道、行业通行做法，都写在 `00-research/`；现在还缺什么，见 `03-stores/README.md`。
+
+| 商店 | 上传文件 | 文案和检查清单 |
+|---|---|---|
+| Google Play | `03-stores/google-play/`：图标 512、Feature graphic 1024×500、7 张 1080×1920 截图 | `google-play/listing.md` |
+| App Store | `03-stores/app-store/`：iPhone 1206×2622（必需）和 1320×2868 各 7 张、iPad 2752×2064 共 4 张；图标随构建包上传 | `app-store/listing.md` |
+| Claude / ChatGPT 目录、Google 登录同意页 | `03-stores/ai-directories/`：图标 120 / 512 / 1024 | — |
+
+⚠️ Google Play 截图现在用的是 iOS 界面，Android 版出来后要替换。仓库里还没有 Android 工程。
+
+## Android 工程（直接拷进 `app/src/main/res/`）
+
+`02-app-icon/android/res/` 里包括：adaptive icon（矢量的 foreground 和 monochrome 层，加背景色）、旧版 mipmap 和圆形图标、通知小图标 `ic_stat_atu`、Android 12+ 启动页图标，以及主题片段。Manifest 里这样写：
+
+```xml
+android:icon="@mipmap/ic_launcher"
+android:roundIcon="@mipmap/ic_launcher_round"
+```
+
+通知里用 `setSmallIcon(R.drawable.ic_stat_atu)`，强调色用 `@color/atu_caramel`。
+
+## iOS
+
+`02-app-icon/ios/AppIcon.appiconset/` 可以直接替换 `ios/native/Assets.xcassets/AppIcon.appiconset/`，里面有默认、Dark、Tinted 三种外观。
+
+## 文件夹
+
+| 文件夹 | 内容 |
+|---|---|
+| 00-research | 外部调研（不对外，不进规范） |
+| 01-logo | SVG 源文件 + 透明底 PNG：彩色、描边、单色（ink/white/caramel）、线条、横版和竖版组合标、字标；guides/ 下是构成图、安全区和错误用法 |
+| 02-app-icon | iOS、Android 图标，各种配色的 1024 PNG 和 SVG |
+| 03-stores | 各商店的上架素材、listing.md 和渠道调研 |
+| 04-marketing | web（OG 图、邮件头图、favicon）、social（X、LinkedIn、帖子、Story、头像）、templates（更新日志卡片）、stickers（贴纸） |
+| 05-states | idle / working / done / offline 四个状态，SVG + PNG |
+| 06-app-samples | Android 和 iOS 系统触点示意、Logo 与玩偶分工 |
+| 07-fonts-and-tokens | Departure Mono、JetBrains Mono（OFL 授权）、tokens.json / tokens.css |
+| 08-source | 真实 App 界面截图（浅色和深色，取自 heyatu.com 线上演示）、官网素材、玩偶状态 GIF |
+| 09-generator | 生成脚本和 HTML 模板，改了几何参数或文案就重新跑 |
+
+## 规则摘要
+
+- 颜色：Ink `#0E0E10` · Paper `#F7F7F8` · Caramel `#D9803A` · Navy `#1F2D4F`
+- 狗头在深色底上用彩色版；在浅色底上一定要用描边版；在焦糖底上用单色白。
+- 字体：标题用 Departure Mono，字标和标签用 JetBrains Mono 500，正文用系统字体。
+- Logo 只出现在 App 外面；App 里面只用穿马甲的玩偶 Atu。
