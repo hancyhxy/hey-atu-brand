@@ -1,5 +1,11 @@
-# Hey Atu 品牌交付包 v1.1（2026-10）
+# Hey Atu 品牌交付包 v1.2（2026-10）
 
+> v1.2（2026-10-13）：
+> - 彩色主标：双耳和脸之间留一道透明缝隙（约 1.5 倍描边宽），深浅底一致；边缘取自同一套平滑曲线。
+> - 线条版（刺绣、周边）：只保留外轮廓一条线加双眼，不再有内线。
+> - Flat 贴纸：9 个配件 × 深 / 浅两版，改为由 `09-generator/build_flat.py` 用当前 Logo 矢量生成（SVG + PNG）。
+> - 规范页适配手机；所有 Logo、图标、状态、商店图、宣发物料和下载包已按新几何重新生成。
+>
 > v1.1（2026-10-13）：狗头 Logo 换成产品团队认可的手绘版（流畅化 A）。头、耳、眼斑为平滑曲线，眼睛为椭圆；描边与缝隙向外生长。所有 Logo、App 图标、状态图、宣发物料和规范已按新几何重新生成。
 
 先打开 **`Hey-Atu-Brand-Guidelines.html`**，PDF 版是同一份内容。规范共 16 节，只写我们自己的视觉系统：Logo、色彩、字体、图形、图像、图标、角色系统（Mark / Flat / Plush 三种形态、衣橱、动作库、延展路线）、应用商店和宣发物料。
@@ -46,8 +52,8 @@ android:roundIcon="@mipmap/ic_launcher_round"
 | 06-app-samples | Android 和 iOS 系统触点示意、Logo 与玩偶分工 |
 | 07-fonts-and-tokens | Departure Mono、JetBrains Mono（OFL 授权）、tokens.json / tokens.css |
 | 08-source | 真实 App 界面截图（浅色和深色，取自 heyatu.com 线上演示）、官网素材、玩偶状态 GIF |
-| 10-character | 角色素材：Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸 |
-| 09-generator | 生成脚本和 HTML 模板，改了几何参数或文案就重新跑 |
+| 10-character | 角色素材：Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸（SVG + PNG，深 / 浅） |
+| 09-generator | 生成脚本和 HTML 模板。改了几何参数或文案后运行 `09-generator/build_all.sh`，会重建全部素材、规范 HTML / PDF 和 `downloads/` 下载包 |
 
 ## 规则摘要
 
