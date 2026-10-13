@@ -173,6 +173,21 @@ footer{{padding:50px 8vw 80px;color:#74747E;font-size:13px}}
 @media(max-width:900px){{.grid4,.cols4,.sws,.states{{grid-template-columns:1fr 1fr}}.cols2,.cols3,.mkgrid{{grid-template-columns:1fr}}.shots{{grid-template-columns:repeat(3,1fr)}}h2{{font-size:30px}}.cover h1{{font-size:40px}}}}
 .topnav{{position:sticky;top:0;z-index:9;display:flex;gap:22px;align-items:center;padding:12px 8vw;background:rgba(14,14,16,.92);backdrop-filter:blur(12px);font:500 13px JBM}}.topnav b{{color:#F7F7F8;margin-right:auto}}.topnav a{{color:#A1A1AA;text-decoration:none}}.topnav a:hover{{color:#E8954F}}
 .dl{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}.dl a{{display:block;background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 0 0 1px #DEDEE3;color:#18181B;text-decoration:none}}.dl a:hover{{box-shadow:0 0 0 2px #D9803A}}.dl b{{font:600 15px JBM;display:block}}.dl span{{font-size:13px;color:#74747E}}
+@media(max-width:600px){{
+html,body{{overflow-x:hidden}}
+.cover{{padding:64px 22px 56px}}.cover h1{{font-size:34px}}section{{padding:56px 20px}}footer{{padding:40px 20px 64px}}
+h2{{font-size:26px}}.lede{{font-size:16px}}
+.topnav{{gap:6px 14px;padding:10px 20px;flex-wrap:wrap}}.topnav b{{flex-basis:100%}}
+.grid4,.cols4,.sws,.states,.forms,.acts,.wd,.dl{{grid-template-columns:1fr}}.cols2,.cols3,.mkgrid{{grid-template-columns:1fr}}
+.shots{{grid-template-columns:repeat(2,1fr)}}.pads{{grid-template-columns:1fr 1fr}}
+.grid4,.cols4,.states,.forms,.acts,.wd,.sws,.dl,.cols2,.cols3,.mkgrid,.shots,.pads{{min-width:0}}
+.grid4>*,.cols4>*,.states>*,.forms>*,.acts>*,.wd>*,.sws>*,.cols2>*,.cols3>*,.mkgrid>*,.dl>*{{min-width:0}}
+.tile .box{{height:200px}}img{{max-width:100%;height:auto}}.tile img,.state img,.act img,.actx img{{height:auto}}
+.state .g{{height:64px;width:auto}}.state .m{{height:72px;width:auto}}.actx{{flex-wrap:wrap}}.actx img{{height:84px;width:auto}}.act .am{{height:36px;width:auto}}
+.row{{flex-wrap:wrap}}.tier .row img{{max-width:45%}}
+.t{{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:normal}}.t th,.t td{{padding:8px 10px;min-width:96px}}
+code{{word-break:break-all}}p,li,td{{overflow-wrap:anywhere}}
+}}
 </style><body>
 <nav class="topnav"><b>Hey Atu · Brand</b><a href="#s1">视觉规范</a><a href="#downloads">下载素材</a><a href="Hey-Atu-Brand-Guidelines.pdf">PDF</a><a href="00-research/Hey-Atu-Research.html">调研（内部）</a></nav>
 <header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.1</span></h1>
