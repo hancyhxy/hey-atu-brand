@@ -20,7 +20,7 @@ import json as _json, os as _os
 class Shape(tuple):
     """(cx, cy, w, h, angle) fitted ellipse + exact smooth polygon in .poly"""
     def __new__(cls, pts):
-        poly = Polygon(pts).buffer(0).simplify(0.15)
+        poly = Polygon(pts).buffer(0)
         import numpy as _np
         a = _np.array(poly.exterior.coords)[:-1]
         c = a.mean(0); cov = _np.cov((a - c).T); w_, v_ = _np.linalg.eigh(cov)
@@ -37,13 +37,15 @@ HEAD = Shape(_G['head'])
 LEAR = Shape(_G['lear'])
 REAR = Shape(_G['rear'])
 PATCH = Shape(_G['patch'])
-EYES = [tuple(e) for e in _G['eye_ellipses']]
+EYES = [Shape(e) for e in _G['eyes']]
+COLOR_SIL = Polygon(_G['color_silhouette']).buffer(0)     # version A colour mark: caramel silhouette
+COLOR_WHITE = Polygon(_G['color_white']).buffer(0)     # version A colour mark: white face
 
 CARAMEL = "#D9803A"
 INK = "#0E0E10"
 WHITE = "#FFFFFF"
-STROKE = 11.0          # sticker silhouette outline (outside), master units
-EAR_LINE = 6.0         # ear-over-head line (outside half), master units
+STROKE = 14.5          # sticker silhouette outline (outside), master units  (= version A)
+EAR_LINE = 8.7         # ear line, grows outward, master units  (= version A)
 
 
 def ellipse_d(e, grow=0.0):
@@ -97,7 +99,7 @@ def poly_d(geom):
 
 
 # ---------- shapes built with booleans (mono / line / notification) ----------
-def mono_shape(gap=14.0, eyes=True):
+def mono_shape(gap=17.4, eyes=True):
     head, lear, rear = ellipse_poly(HEAD), ellipse_poly(LEAR), ellipse_poly(REAR)
     head2 = head.difference(lear.buffer(gap)).difference(rear.buffer(gap))
     g = unary_union([head2, lear, rear])
@@ -107,25 +109,25 @@ def mono_shape(gap=14.0, eyes=True):
 
 
 def line_shape(width=18.0):
+    """Version A line art: outward rings (width*0.8) for head, ears and patch edge."""
+    lw = width * 0.8
+    J = dict(quad_segs=32, join_style='round')
     head, lear, rear = ellipse_poly(HEAD), ellipse_poly(LEAR), ellipse_poly(REAR)
     patch = ellipse_poly(PATCH).intersection(head)
-    sil = unary_union([head, lear, rear])
-    lines = [sil.exterior if hasattr(sil, 'exterior') else sil.boundary,
-             lear.exterior.intersection(head),
-             rear.exterior.intersection(head.difference(patch.buffer(-2))),
-             patch.boundary.intersection(head.buffer(-1)).difference(lear).difference(rear)]
-    strokes = unary_union([l.buffer(width / 2, cap_style='round', join_style='round') for l in lines])
+    ring = lambda q: q.buffer(lw, **J).difference(q)
+    parts = [ring(lear),
+             ring(rear).difference(lear),
+             ring(head).difference(lear.buffer(lw, **J)).difference(rear.buffer(lw, **J)),
+             ring(patch).intersection(head).difference(rear.buffer(lw, **J)).difference(lear.buffer(lw, **J))]
     eyes = unary_union([ellipse_poly(e) for e in EYES])
-    return unary_union([strokes, eyes])
+    return unary_union(parts + [eyes])
 
 
 # ---------- analytic SVG bodies ----------
 def color_body(head=WHITE, car=CARAMEL, ink=INK, eyes=True, pid="h"):
-    s = [f'<defs><clipPath id="{pid}"><path d="{ellipse_d(HEAD)}"/></clipPath></defs>',
-         f'<path fill="{head}" d="{ellipse_d(HEAD)}"/>',
-         f'<path fill="{car}" clip-path="url(#{pid})" d="{ellipse_d(PATCH)}"/>',
-         f'<path fill="{car}" d="{ellipse_d(REAR)}"/>',
-         f'<path fill="{car}" d="{ellipse_d(LEAR)}"/>']
+    """Version A colour mark: caramel silhouette + white face + eyes (exact approved artwork)."""
+    s = [f'<path fill="{car}" d="{poly_d(COLOR_SIL)}"/>',
+         f'<path fill="{head}" d="{poly_d(COLOR_WHITE)}"/>']
     if eyes:
         s += [f'<path fill="{ink}" d="{ellipse_d(e)}"/>' for e in EYES]
     return "\n".join(s)
@@ -134,12 +136,11 @@ def color_body(head=WHITE, car=CARAMEL, ink=INK, eyes=True, pid="h"):
 def outline_body(head=WHITE, car=CARAMEL, ink=INK, pid="h", eyes=True):
     s = [f'<defs><clipPath id="{pid}"><path d="{ellipse_d(HEAD)}"/></clipPath></defs>',
          # silhouette outline: every shape grown by STROKE, filled ink
-         *[f'<path fill="{ink}" d="{ellipse_d(e, STROKE)}"/>' for e in (HEAD, LEAR, REAR)],
+         f'<path fill="{ink}" d="{poly_d(unary_union([ellipse_poly(e) for e in (HEAD, LEAR, REAR)]).buffer(STROKE, quad_segs=32, join_style="round"))}"/>',
          f'<path fill="{head}" d="{ellipse_d(HEAD)}"/>',
          f'<path fill="{car}" clip-path="url(#{pid})" d="{ellipse_d(PATCH)}"/>',
          # right ear: outer line, then patch repainted so the ear meets the patch without a line
          f'<path fill="{ink}" d="{ellipse_d(REAR, EAR_LINE)}"/>',
-         f'<path fill="{car}" clip-path="url(#{pid})" d="{ellipse_d(PATCH)}"/>',
          f'<path fill="{car}" d="{ellipse_d(REAR)}"/>',
          f'<path fill="{ink}" d="{ellipse_d(LEAR, EAR_LINE)}"/>',
          f'<path fill="{car}" d="{ellipse_d(LEAR)}"/>']

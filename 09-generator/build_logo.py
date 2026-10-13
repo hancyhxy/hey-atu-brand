@@ -18,8 +18,8 @@ def glyph_variants():
         'atu-glyph-mono-ink': svg_doc(f'<path fill="{INK}" fill-rule="evenodd" d="{poly_d(mono_shape())}"/>', vb0),
         'atu-glyph-mono-white': svg_doc(f'<path fill="#FFFFFF" fill-rule="evenodd" d="{poly_d(mono_shape())}"/>', vb0),
         'atu-glyph-mono-caramel': svg_doc(f'<path fill="{CARAMEL}" fill-rule="evenodd" d="{poly_d(mono_shape())}"/>', vb0),
-        'atu-glyph-line-ink': svg_doc(f'<path fill="{INK}" fill-rule="evenodd" d="{poly_d(line_shape())}"/>', tight_vb(9)),
-        'atu-glyph-line-white': svg_doc(f'<path fill="#FFFFFF" fill-rule="evenodd" d="{poly_d(line_shape())}"/>', tight_vb(9)),
+        'atu-glyph-line-ink': svg_doc(f'<path fill="{INK}" fill-rule="evenodd" d="{poly_d(line_shape())}"/>', tight_vb(15)),
+        'atu-glyph-line-white': svg_doc(f'<path fill="#FFFFFF" fill-rule="evenodd" d="{poly_d(line_shape())}"/>', tight_vb(15)),
     }
     return v
 

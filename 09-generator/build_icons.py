@@ -40,14 +40,17 @@ def vd_color_group(s, tx, ty, outline=False):
     c = lambda h: '#FF' + h.lstrip('#').upper()
     P = lambda d, fill: f'    <path android:fillColor="{c(fill)}" android:pathData="{d}"/>\n'
     out = f'  <group android:translateX="{tx:.3f}" android:translateY="{ty:.3f}" android:scaleX="{s:.5f}" android:scaleY="{s:.5f}">\n'
+    if not outline:   # version A colour mark
+        out += P(poly_d(COLOR_SIL), CARAMEL) + P(poly_d(COLOR_WHITE), WHITE)
+        for e in EYES:
+            out += P(ellipse_d(e), INK)
+        return out + '  </group>\n'
     if outline:
-        for e in (HEAD, LEAR, REAR):
-            out += P(ellipse_d(e, STROKE), INK)
+        out += P(poly_d(unary_union([ellipse_poly(e) for e in (HEAD, LEAR, REAR)]).buffer(STROKE, quad_segs=32, join_style='round')), INK)
     out += P(ellipse_d(HEAD), WHITE)
     out += f'    <group>\n      <clip-path android:pathData="{ellipse_d(HEAD)}"/>\n  ' + P(ellipse_d(PATCH), CARAMEL) + '    </group>\n'
     if outline:
         out += P(ellipse_d(REAR, EAR_LINE), INK)
-        out += f'    <group>\n      <clip-path android:pathData="{ellipse_d(HEAD)}"/>\n  ' + P(ellipse_d(PATCH), CARAMEL) + '    </group>\n'
     out += P(ellipse_d(REAR), CARAMEL)
     if outline:
         out += P(ellipse_d(LEAR, EAR_LINE), INK)
