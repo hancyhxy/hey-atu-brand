@@ -46,7 +46,7 @@ INK = "#0E0E10"
 WHITE = "#FFFFFF"
 STROKE = 14.5          # sticker silhouette outline (outside), master units  (= version A)
 COLOR_ROUND = 10.0     # colour mark: corner rounding radius at the gap ends
-COLOR_GAP = 14.5       # colour mark: transparent gap between face and ears, master units
+COLOR_GAP = 22.0       # colour mark: transparent gap between face and ears, master units
 EAR_LINE = 8.7         # ear line, grows outward, master units  (= version A)
 
 
