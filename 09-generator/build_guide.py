@@ -55,10 +55,10 @@ def build():
         '<div class="grid4">' + tile(f'{L}/svg/atu-glyph-color.svg', '<b>彩色主标</b>：深色底的默认版本', '#0E0E10') +
         tile(f'{L}/svg/atu-glyph-outline.svg', '<b>描边版</b>：浅色底、白色底、16–32px') +
         tile(f'{L}/svg/atu-glyph-mono-ink.svg', '<b>单色版</b>：单色印刷、压印、系统图标') +
-        tile(f'{L}/svg/atu-glyph-line-ink.svg', '<b>线条版</b>：刺绣、线稿、周边') + '</div>' +
+        tile(f'{L}/svg/atu-glyph-line-ink.svg', '<b>线条版</b>：刺绣、周边，只有外轮廓一条线加双眼') + '</div>' +
         '''<table class="t"><tr><th>场景</th><th>用哪个</th></tr><tr><td>深色底（#0E0E10、Navy、照片暗部）</td><td>彩色主标</td></tr><tr><td>浅色底（#F7F7F8、白、奶油）</td><td>描边版（白头必须有黑描边托住）</td></tr>
         <tr><td>焦糖底</td><td>单色白（不要用彩色版，焦糖耳会和底色融在一起）</td></tr><tr><td>只能用 1 种颜色（系统通知、压印、传真）</td><td>单色版</td></tr><tr><td>≤16px（favicon、状态栏）</td><td>单色版或描边版</td></tr></table>'''))
-    S_.append(sec(3, '构成、安全区与最小尺寸', '狗头由 5 个独立图形叠放而成：头、左耳、右耳、眼斑、两只眼睛。头、耳、眼斑是产品团队认可的手绘轮廓，经流畅化处理后的平滑曲线；眼睛是标准椭圆。各图形直接叠放、接缝不做倒角；描边版和单色版的描边与缝隙一律向外生长。不要重新手绘，所有文件都由同一份轮廓数据生成（<code>09-generator/glyph_shapes.json</code> + <code>geom.py</code>）。',
+    S_.append(sec(3, '构成、安全区与最小尺寸', '狗头由 5 个独立图形叠放而成：头、左耳、右耳、眼斑、两只眼睛。头、耳、眼斑是产品团队认可的手绘轮廓，经流畅化处理后的平滑曲线；眼睛是标准椭圆。接缝不做倒角；彩色版的双耳和脸之间留一道与描边等宽的透明缝隙，深浅底都一样；描边版和单色版的描边与缝隙一律向外生长。不要重新手绘，所有文件都由同一份轮廓数据生成（<code>09-generator/glyph_shapes.json</code> + <code>geom.py</code>）。',
         '<div class="cols2">' + tile(f'{L}/guides/atu-construction.svg', '构成：头、双耳、眼斑、双眼 5 个图形；眼斑被裁切在头部范围内', '#0E0E10', 300) +
         tile(f'{L}/guides/atu-clearspace.svg', '安全区：四周至少留 <b>X = 1 个眼睛的高度</b>', '#0E0E10', 300) + '</div>' +
         '''<table class="t"><tr><th>版本</th><th>屏幕最小</th><th>印刷最小</th></tr><tr><td>彩色主标</td><td>24 px 高</td><td>8 mm</td></tr><tr><td>描边版 / 单色版</td><td>16 px 高</td><td>5 mm</td></tr><tr><td>横版组合标</td><td>96 px 宽</td><td>25 mm</td></tr></table>'''))

@@ -45,6 +45,8 @@ CARAMEL = "#D9803A"
 INK = "#0E0E10"
 WHITE = "#FFFFFF"
 STROKE = 14.5          # sticker silhouette outline (outside), master units  (= version A)
+COLOR_ROUND = 10.0     # colour mark: corner rounding radius at the gap ends
+COLOR_GAP = 14.5       # colour mark: transparent gap between face and ears, master units
 EAR_LINE = 8.7         # ear line, grows outward, master units  (= version A)
 
 
@@ -109,25 +111,34 @@ def mono_shape(gap=17.4, eyes=True):
 
 
 def line_shape(width=18.0):
-    """Version A line art: outward rings (width*0.8) for head, ears and patch edge."""
+    """Embroidery line art: one outward ring around the outer silhouette, plus eyes.
+    No inner lines (ear/head joins, patch edge) so it stitches as a single contour."""
     lw = width * 0.8
     J = dict(quad_segs=32, join_style='round')
-    head, lear, rear = ellipse_poly(HEAD), ellipse_poly(LEAR), ellipse_poly(REAR)
-    patch = ellipse_poly(PATCH).intersection(head)
-    ring = lambda q: q.buffer(lw, **J).difference(q)
-    parts = [ring(lear),
-             ring(rear).difference(lear),
-             ring(head).difference(lear.buffer(lw, **J)).difference(rear.buffer(lw, **J)),
-             ring(patch).intersection(head).difference(rear.buffer(lw, **J)).difference(lear.buffer(lw, **J))]
+    sil = unary_union([ellipse_poly(e) for e in (HEAD, LEAR, REAR)])
+    ring = sil.buffer(lw, **J).difference(sil)
     eyes = unary_union([ellipse_poly(e) for e in EYES])
-    return unary_union(parts + [eyes])
+    return unary_union([ring, eyes])
 
 
 # ---------- analytic SVG bodies ----------
 def color_body(head=WHITE, car=CARAMEL, ink=INK, eyes=True, pid="h"):
     """Version A colour mark: caramel silhouette + white face + eyes (exact approved artwork)."""
-    s = [f'<path fill="{car}" d="{poly_d(COLOR_SIL)}"/>',
-         f'<path fill="{head}" d="{poly_d(COLOR_WHITE)}"/>']
+    # ears are cut away from the face by a transparent gap (same gap as the mono mark),
+    # so the background shows between face and ears on dark and light grounds alike
+    J = dict(quad_segs=32, join_style='round')
+    # built from the same smooth head / ear curves as the mono mark (no notches)
+    ears = unary_union([ellipse_poly(LEAR), ellipse_poly(REAR)])
+    face = ellipse_poly(HEAD).difference(ears.buffer(COLOR_GAP, **J))
+    sm = lambda g, r=COLOR_ROUND: g.buffer(-r, **J).buffer(2 * r, **J).buffer(-r, **J)
+    face = sm(face)
+    patch = ellipse_poly(PATCH).intersection(face)
+    # white overlaps the patch slightly: no orange fringe on the white edge
+    # opening removes hairline white slivers where the patch meets the head edge
+    white = face.difference(patch).buffer(-4, **J).buffer(4 + 1.5, **J).intersection(face)
+    s = [f'<path fill="{car}" d="{poly_d(ears)}"/>',
+         f'<path fill="{car}" d="{poly_d(patch)}"/>',
+         f'<path fill="{head}" d="{poly_d(white)}"/>']
     if eyes:
         s += [f'<path fill="{ink}" d="{ellipse_d(e)}"/>' for e in EYES]
     return "\n".join(s)
