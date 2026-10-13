@@ -58,14 +58,14 @@ def build():
         tile(f'{L}/svg/atu-glyph-line-ink.svg', '<b>线条版</b>：刺绣、线稿、周边') + '</div>' +
         '''<table class="t"><tr><th>场景</th><th>用哪个</th></tr><tr><td>深色底（#0E0E10、Navy、照片暗部）</td><td>彩色主标</td></tr><tr><td>浅色底（#F7F7F8、白、奶油）</td><td>描边版（白头必须有黑描边托住）</td></tr>
         <tr><td>焦糖底</td><td>单色白（不要用彩色版，焦糖耳会和底色融在一起）</td></tr><tr><td>只能用 1 种颜色（系统通知、压印、传真）</td><td>单色版</td></tr><tr><td>≤16px（favicon、状态栏）</td><td>单色版或描边版</td></tr></table>'''))
-    S_.append(sec(3, '构成、安全区与最小尺寸', '整个狗头由 6 个椭圆组成：头、两只耳朵、眼斑、两只眼睛。眼斑是头内的一条连续椭圆弧。不要重新手绘，所有文件都由同一份几何参数生成（<code>src/geom.py</code>）。',
-        '<div class="cols2">' + tile(f'{L}/guides/atu-construction.svg', '构成：6 个椭圆，眼斑被裁切在头部范围内', '#0E0E10', 300) +
+    S_.append(sec(3, '构成、安全区与最小尺寸', '狗头由 5 个独立图形叠放而成：头、左耳、右耳、眼斑、两只眼睛。头、耳、眼斑是产品团队认可的手绘轮廓，经流畅化处理后的平滑曲线；眼睛是标准椭圆。各图形直接叠放、接缝不做倒角；描边版和单色版的描边与缝隙一律向外生长。不要重新手绘，所有文件都由同一份轮廓数据生成（<code>09-generator/glyph_shapes.json</code> + <code>geom.py</code>）。',
+        '<div class="cols2">' + tile(f'{L}/guides/atu-construction.svg', '构成：头、双耳、眼斑、双眼 5 个图形；眼斑被裁切在头部范围内', '#0E0E10', 300) +
         tile(f'{L}/guides/atu-clearspace.svg', '安全区：四周至少留 <b>X = 1 个眼睛的高度</b>', '#0E0E10', 300) + '</div>' +
         '''<table class="t"><tr><th>版本</th><th>屏幕最小</th><th>印刷最小</th></tr><tr><td>彩色主标</td><td>24 px 高</td><td>8 mm</td></tr><tr><td>描边版 / 单色版</td><td>16 px 高</td><td>5 mm</td></tr><tr><td>横版组合标</td><td>96 px 宽</td><td>25 mm</td></tr></table>'''))
     S_.append(sec(4, '组合标志与字标', '字标 “Hey Atu” 用 <b>JetBrains Mono Medium（500）</b>，和 App 内的字体一致。文件里的字已经转成路径，打开时不需要装字体。',
         '<div class="cols2">' + tile(f'{L}/svg/atu-lockup-horizontal-on-dark.svg', '横版 · 深色底', '#0E0E10', 110) + tile(f'{L}/svg/atu-lockup-horizontal-on-light.svg', '横版 · 浅色底（描边狗头）', '#F7F7F8', 110) +
         tile(f'{L}/svg/atu-lockup-stacked-on-dark.svg', '竖版 · 深色底', '#0E0E10', 220) + tile(f'{L}/svg/atu-lockup-stacked-on-light.svg', '竖版 · 浅色底', '#F7F7F8', 220) + '</div>' +
-        '<p class="note">比例关系：大写字母高度 = 狗头高度 × 0.40；狗头和字之间的间距 = 狗头高度 × 0.26；字的竖向中心对齐头部椭圆的圆心。字间距 −1%。品牌名一律写成 <b>Hey Atu</b>，不用全大写 “HEY ATU”，也不用官网页脚的 Instrument Serif 斜体，这一处需要官网同步更新。</p>'))
+        '<p class="note">比例关系：大写字母高度 = 狗头高度 × 0.40；狗头和字之间的间距 = 狗头高度 × 0.26；字的竖向中心对齐头部的中心。字间距 −1%。品牌名一律写成 <b>Hey Atu</b>，不用全大写 “HEY ATU”，也不用官网页脚的 Instrument Serif 斜体，这一处需要官网同步更新。</p>'))
     img = lambda f, st='': f'<img src="{L}/svg/{f}" style="height:110px;{st}">'
     S_.append(sec(5, '错误用法', '下面这些都会让 Atu 不再是同一只狗。',
         '<div class="grid4">' + dont(f'<img src="{L}/guides/misuse/atu-dont-recolor.svg" style="height:110px">', '改耳朵颜色', '#0E0E10') +
@@ -134,7 +134,7 @@ def build():
         <tr><td>10-character</td><td>Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸</td><td>GIF / WebP / PNG</td></tr><tr><td>07-fonts-and-tokens</td><td>字体（OFL 授权）、tokens.json / tokens.css</td><td>TTF / JSON / CSS</td></tr><tr><td>08-source</td><td>真实 App 界面截图（浅色 / 深色）、官网素材、玩偶状态 GIF</td><td>PNG / WebP / GIF</td></tr></table>'''))
 
     toc = ''.join(f'<a href="#s{i}">{i:02d} {t}</a>' for i, t in enumerate(TITLES, 1))
-    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 品牌视觉规范 v1.0</title>
+    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 品牌视觉规范 v1.1</title>
 <style>
 @font-face{{font-family:"Departure Mono";src:url("{F}/DepartureMono-Regular.ttf")}}
 @font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-400.ttf");font-weight:400}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-500.ttf");font-weight:500}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-600.ttf");font-weight:600}}
@@ -175,7 +175,7 @@ footer{{padding:50px 8vw 80px;color:#74747E;font-size:13px}}
 .dl{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}.dl a{{display:block;background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 0 0 1px #DEDEE3;color:#18181B;text-decoration:none}}.dl a:hover{{box-shadow:0 0 0 2px #D9803A}}.dl b{{font:600 15px JBM;display:block}}.dl span{{font-size:13px;color:#74747E}}
 </style><body>
 <nav class="topnav"><b>Hey Atu · Brand</b><a href="#s1">视觉规范</a><a href="#downloads">下载素材</a><a href="Hey-Atu-Brand-Guidelines.pdf">PDF</a><a href="00-research/Hey-Atu-Research.html">调研（内部）</a></nav>
-<header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.0</span></h1>
+<header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.1</span></h1>
 <div style="color:#A1A1AA;font:500 15px JBM">Brand guidelines · 2026-10 · 交付产品团队 · Google Play / App Store 上架</div><nav class="toc">{toc}</nav></header>
 {''.join(S_)}
 <section id="downloads"><div class="num">↓</div><h2>下载素材</h2><p class="lede">按用途分包下载。所有 PNG 都由 SVG 渲染；要改图请改源文件，再重新生成。</p><div class="dl">
@@ -189,7 +189,7 @@ footer{{padding:50px 8vw 80px;color:#74747E;font-size:13px}}
 <a href="downloads/hey-atu-brand-kit-full.zip"><b>完整交付包</b><span>以上全部 + 真实界面截图 + 生成脚本（不含 PDF 和调研）</span></a>
 <a href="Hey-Atu-Brand-Guidelines.pdf"><b>规范 PDF</b><span>本页的 PDF 版</span></a>
 <a href="00-research/Hey-Atu-Research.html"><b>调研（内部）</b><span>Agent 公司视觉调研 · 上架渠道调研</span></a></div></section>
-<footer>Hey Atu · 品牌视觉规范 v1.0 · 所有 PNG 都由 SVG 或 HTML 渲染，源文件见 src/。界面截图取自 heyatu.com 线上演示（按当前 App 还原，示例内容）。</footer></body></html>'''
+<footer>Hey Atu · 品牌视觉规范 v1.1 · 所有 PNG 都由 SVG 或 HTML 渲染，源文件见 src/。界面截图取自 heyatu.com 线上演示（按当前 App 还原，示例内容）。</footer></body></html>'''
     write(f'{KIT}/Hey-Atu-Brand-Guidelines.html', html)
     with Renderer() as r:
         r.pg.set_viewport_size({'width': 1440, 'height': 900})

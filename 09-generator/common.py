@@ -5,7 +5,7 @@ from fontTools.pens.transformPen import TransformPen
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.expanduser('~/.pi/tmp/2026-10-12/brand-spec')
-KIT = os.path.join(ROOT, 'HeyAtu-Brand-Kit')
+KIT = os.environ.get('ATU_KIT') or os.path.join(ROOT, 'HeyAtu-Brand-Kit')
 FONTS = os.path.join(ROOT, 'fonts/ttf')
 
 _fonts = {}

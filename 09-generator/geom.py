@@ -1,18 +1,43 @@
 """Hey Atu glyph geometry. Single source for every logo, icon and state file.
 
-Units: master units (the 03 v2 build). All shapes are ellipses (cx, cy, w, h, angle_deg),
-angle = clockwise rotation in y-down coordinates (same in OpenCV and SVG).
+Units: master units (the 03 v2 build).
+v2.0 (2026-10-13): the glyph is the product-approved hand-drawn dog, smoothed (version A).
+Head, ears, eye patch and eyes are smooth closed curves stored in glyph_shapes.json.
+Each part is still a separate shape layered as before (head, patch clipped to head,
+right ear, left ear, eyes); no fillets at the joins; strokes and gaps grow outward.
+HEAD / LEAR / REAR / PATCH / EYES remain tuples (cx, cy, w, h, angle_deg) fitted to each
+shape for layout and guides; the drawing functions use the exact curve via `.poly`.
+Plain tuples (e.g. derived state eyes) are still drawn as ellipses.
 """
 import math
 from shapely.geometry import Point, Polygon, MultiPolygon, LineString
 from shapely import affinity
 from shapely.ops import unary_union
 
-HEAD = (468.709, 330.383, 607.013, 669.647, 33.593)
-LEAR = (164.581, 163.570, 204.356, 417.941, 45.425)
-REAR = (778.803, 379.151, 160.164, 415.904, 171.239)
-PATCH = (664.385, 215.614, 371.923, 489.340, 19.683)
-EYES = [(388.14, 321.45, 70.5, 121.2, 0.0), (556.62, 321.34, 70.5, 121.2, 0.0)]
+import json as _json, os as _os
+
+
+class Shape(tuple):
+    """(cx, cy, w, h, angle) fitted ellipse + exact smooth polygon in .poly"""
+    def __new__(cls, pts):
+        poly = Polygon(pts).buffer(0).simplify(0.15)
+        import numpy as _np
+        a = _np.array(poly.exterior.coords)[:-1]
+        c = a.mean(0); cov = _np.cov((a - c).T); w_, v_ = _np.linalg.eigh(cov)
+        ang = math.degrees(math.atan2(v_[1, 0], v_[0, 0]))
+        u = (a - c) @ v_[:, 0]; t = (a - c) @ v_[:, 1]
+        cx, cy = poly.centroid.x, poly.centroid.y
+        obj = super().__new__(cls, (cx, cy, float(u.max() - u.min()), float(t.max() - t.min()), ang))
+        obj.poly = poly
+        return obj
+
+
+_G = _json.load(open(_os.path.join(_os.path.dirname(__file__), 'glyph_shapes.json')))
+HEAD = Shape(_G['head'])
+LEAR = Shape(_G['lear'])
+REAR = Shape(_G['rear'])
+PATCH = Shape(_G['patch'])
+EYES = [tuple(e) for e in _G['eye_ellipses']]
 
 CARAMEL = "#D9803A"
 INK = "#0E0E10"
@@ -22,6 +47,8 @@ EAR_LINE = 6.0         # ear-over-head line (outside half), master units
 
 
 def ellipse_d(e, grow=0.0):
+    if hasattr(e, 'poly'):
+        return poly_d(ellipse_poly(e, grow))
     cx, cy, w, h, a = e
     rx, ry = w / 2 + grow, h / 2 + grow
     t = math.radians(a)
@@ -34,6 +61,8 @@ def ellipse_d(e, grow=0.0):
 
 
 def ellipse_poly(e, grow=0.0, n=256):
+    if hasattr(e, 'poly'):
+        return e.poly.buffer(grow, quad_segs=32, join_style='round') if grow else e.poly
     cx, cy, w, h, a = e
     c = Point(0, 0).buffer(1, quad_segs=n)
     c = affinity.scale(c, w / 2 + grow, h / 2 + grow)
@@ -42,6 +71,8 @@ def ellipse_poly(e, grow=0.0, n=256):
 
 
 def ellipse_bbox(e, grow=0.0):
+    if hasattr(e, 'poly'):
+        return ellipse_poly(e, grow).bounds
     cx, cy, w, h, a = e
     rx, ry, t = w / 2 + grow, h / 2 + grow, math.radians(a)
     ex = math.sqrt((rx * math.cos(t)) ** 2 + (ry * math.sin(t)) ** 2)
