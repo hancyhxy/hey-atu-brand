@@ -1,4 +1,5 @@
 import os, sys, json
+import character_section as CH
 sys.path.insert(0, os.path.dirname(__file__))
 from common import *
 
@@ -21,8 +22,13 @@ def dont(inner, cap, bg='#F7F7F8'):
     return f'<figure class="tile dont"><div class="box" style="background:{bg}">{inner}</div><figcaption>✕ {cap}</figcaption></figure>'
 
 
-def sec(n, title, lede, body):
-    return f'<section id="s{n}"><div class="num">{n:02d}</div><h2>{title}</h2><p class="lede">{lede}</p>{body}</section>'
+TITLES = []
+
+
+def sec(n, title, lede, body, short=None):
+    TITLES.append(short or title); n = len(TITLES)
+    lede_html = f'<p class="lede">{lede}</p>' if lede else ''
+    return f'<section id="s{n}"><div class="num">{n:02d}</div><h2>{title}</h2>{lede_html}{body}</section>'
 
 
 def build():
@@ -70,12 +76,13 @@ def build():
         dont(img('atu-glyph-color.svg'), '彩色白头直接放在浅底上，不加描边', '#F7F7F8') +
         dont(f'<img src="{L}/guides/misuse/atu-dont-gradient.svg" style="height:110px">', '加渐变、加阴影、加 3D', '#0E0E10') +
         dont(f'<div style="width:150px;height:150px;border-radius:34px;background:#0E0E10;overflow:hidden;position:relative"><img src="{L}/svg/atu-glyph-color.svg" style="position:absolute;height:170px;left:30px;top:40px"></div>', '把狗头裁切成“从角落探头”（旧版 E）') + '</div>'))
-    S_.append(sec(6, 'Logo 和玩偶怎么分工', 'Logo 是数字符号，只出现在 App 外面；玩偶 Atu（穿抓绒马甲的那只）是角色，只出现在 App 里面和视频里。两者靠同样的焦糖耳、右眼斑和黑眼睛，让人认出是同一只狗。',
+    S_.append(sec(6, 'Logo 和玩偶怎么分工', 'Logo 是数字符号，只出现在 App 外面；玩偶 Atu（穿抓绒马甲的那只）是角色，只出现在 App 里面和视频里。两者靠同样的焦糖耳、右眼斑和黑眼睛，让人认出是同一只狗。完整的角色规范见后面的「角色系统」一节。',
         f'<img class="wide" src="{X}/hey-atu-logo-vs-mascot.png">' +
         '''<table class="t"><tr><th></th><th>Logo（狗头符号）</th><th>玩偶 Atu</th></tr><tr><td>出现位置</td><td>App 图标、系统通知、应用商店、官网导航、分享卡片、社媒头像</td><td>Agent 页顶部 80pt 动画、抽屉里的 Agents 行、离线睡觉页、视频、宣发里的角色客串</td></tr>
         <tr><td>不要放在</td><td>App 内的界面里（Chats 页、会话列表都不放 logo）</td><td>App 图标、系统通知、单色场景</td></tr></table>'''))
     S_.append(sec(7, '四个状态', 'Logo 的 4 个状态和 App 里玩偶的 4 个状态一一对应，用在通知、Live Activity、社媒和状态面板里。不设 “needs-you” 状态；离线用闭眼，不用 X 眼。',
         f'<div class="states">{states}</div>'))
+    S_.append(sec(0, '角色系统：一只狗，三种形态', '', CH.html(), short='角色系统'))
     S_.append(sec(8, '色彩', '用色比例大约是 Ink 60%、Paper 25%、Caramel 10%、Navy 5%。焦糖色是唯一的强调色，一个画面里只强调一处。',
         f'<div class="ratio"><i style="flex:60;background:#0E0E10"></i><i style="flex:25;background:#F7F7F8"></i><i style="flex:10;background:#D9803A"></i><i style="flex:5;background:#1F2D4F"></i></div><div class="sws">{colors}</div>'
         f'<h3>App 界面颜色（来自 <code>NativeAppearance.swift</code>，App 团队维护，这里只做对照）</h3><table class="t ui"><tr><th>token</th><th>Light</th><th>Dark</th></tr>{ui}</table>'
@@ -124,10 +131,10 @@ def build():
         <tr><td>01-logo/guides</td><td>构成图、安全区、错误用法</td><td>SVG / PNG</td></tr><tr><td>02-app-icon</td><td>iOS appiconset、Android res（adaptive / 旧版 / 圆形 / 通知 / 启动页）、其他配色</td><td>XML VectorDrawable、PNG、SVG、JSON</td></tr>
         <tr><td>03-stores</td><td>google-play：图标、Feature graphic、7 张截图、listing.md；app-store：图标、iPhone 6.9 / 6.3 寸各 7 张、iPad 13 寸 4 张、listing.md；ai-directories：目录和 Google 登录用的图标</td><td>PNG / JPG / MD</td></tr><tr><td>04-marketing</td><td>OG、X、LinkedIn、帖子、Story、头像、更新日志卡、邮件头图、贴纸、favicon</td><td>PNG</td></tr>
         <tr><td>05-states</td><td>idle / working / done / offline</td><td>SVG；PNG 256 / 512 / 1024</td></tr><tr><td>06-app-samples</td><td>Android、iOS 系统触点示意；Logo 和玩偶分工</td><td>PNG</td></tr>
-        <tr><td>07-fonts-and-tokens</td><td>字体（OFL 授权）、tokens.json / tokens.css</td><td>TTF / JSON / CSS</td></tr><tr><td>08-source</td><td>真实 App 界面截图（浅色 / 深色）、官网素材、玩偶状态 GIF</td><td>PNG / WebP / GIF</td></tr></table>'''))
+        <tr><td>10-character</td><td>Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸</td><td>GIF / WebP / PNG</td></tr><tr><td>07-fonts-and-tokens</td><td>字体（OFL 授权）、tokens.json / tokens.css</td><td>TTF / JSON / CSS</td></tr><tr><td>08-source</td><td>真实 App 界面截图（浅色 / 深色）、官网素材、玩偶状态 GIF</td><td>PNG / WebP / GIF</td></tr></table>'''))
 
-    toc = ''.join(f'<a href="#s{i}">{i:02d} {t}</a>' for i, t in enumerate(['品牌概述', 'Logo 系统', '构成与安全区', '组合标志', '错误用法', 'Logo 和玩偶', '四个状态', '色彩', '字体', '图形元素', '图像风格', '图标与系统', '应用商店', '宣发物料', '文件索引'], 1))
-    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Hey Atu · 品牌视觉规范 v1.0</title>
+    toc = ''.join(f'<a href="#s{i}">{i:02d} {t}</a>' for i, t in enumerate(TITLES, 1))
+    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 品牌视觉规范 v1.0</title>
 <style>
 @font-face{{font-family:"Departure Mono";src:url("{F}/DepartureMono-Regular.ttf")}}
 @font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-400.ttf");font-weight:400}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-500.ttf");font-weight:500}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-600.ttf");font-weight:600}}
@@ -161,12 +168,27 @@ img.wide{{width:100%;border-radius:20px;display:block;margin:0 0 18px;box-shadow
 .shots{{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-top:12px}}.shots img{{width:100%;border-radius:14px}}.pads{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}}.pads img{{width:100%;border-radius:12px}}
 .mkgrid{{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}}.mk{{margin:0}}.mk img{{width:100%;border-radius:16px;box-shadow:0 0 0 1px #DEDEE3;display:block;max-height:640px;object-fit:contain;background:#E9E9EC}}.mk figcaption{{font-size:14px;color:#4F4F58;margin-top:8px}}
 footer{{padding:50px 8vw 80px;color:#74747E;font-size:13px}}
+{CH.CSS}
 @media print{{section{{break-inside:auto;padding:46px 6vw}}.cover{{padding:80px 6vw}}}}
 @media(max-width:900px){{.grid4,.cols4,.sws,.states{{grid-template-columns:1fr 1fr}}.cols2,.cols3,.mkgrid{{grid-template-columns:1fr}}.shots{{grid-template-columns:repeat(3,1fr)}}h2{{font-size:30px}}.cover h1{{font-size:40px}}}}
+.topnav{{position:sticky;top:0;z-index:9;display:flex;gap:22px;align-items:center;padding:12px 8vw;background:rgba(14,14,16,.92);backdrop-filter:blur(12px);font:500 13px JBM}}.topnav b{{color:#F7F7F8;margin-right:auto}}.topnav a{{color:#A1A1AA;text-decoration:none}}.topnav a:hover{{color:#E8954F}}
+.dl{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}}.dl a{{display:block;background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 0 0 1px #DEDEE3;color:#18181B;text-decoration:none}}.dl a:hover{{box-shadow:0 0 0 2px #D9803A}}.dl b{{font:600 15px JBM;display:block}}.dl span{{font-size:13px;color:#74747E}}
 </style><body>
+<nav class="topnav"><b>Hey Atu · Brand</b><a href="#s1">视觉规范</a><a href="#downloads">下载素材</a><a href="Hey-Atu-Brand-Guidelines.pdf">PDF</a><a href="00-research/Hey-Atu-Research.html">调研（内部）</a></nav>
 <header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.0</span></h1>
 <div style="color:#A1A1AA;font:500 15px JBM">Brand guidelines · 2026-10 · 交付产品团队 · Google Play / App Store 上架</div><nav class="toc">{toc}</nav></header>
 {''.join(S_)}
+<section id="downloads"><div class="num">↓</div><h2>下载素材</h2><p class="lede">按用途分包下载。所有 PNG 都由 SVG 渲染；要改图请改源文件，再重新生成。</p><div class="dl">
+<a href="downloads/hey-atu-google-play.zip"><b>Google Play</b><span>图标 512 · Feature graphic · 7 张截图 · listing.md</span></a>
+<a href="downloads/hey-atu-app-store.zip"><b>App Store</b><span>iPhone 6.9 / 6.3 寸 · iPad 13 寸 · 图标 · listing.md</span></a>
+<a href="downloads/hey-atu-app-icons.zip"><b>App 图标（开发用）</b><span>Android res · iOS AppIcon.appiconset · SVG</span></a>
+<a href="downloads/hey-atu-logo.zip"><b>Logo</b><span>SVG + PNG · 组合标 · 字标 · 构成 / 安全区</span></a>
+<a href="downloads/hey-atu-marketing.zip"><b>宣发物料 + 状态</b><span>OG · 社媒 · 贴纸 · idle / working / done / offline</span></a>
+<a href="downloads/hey-atu-character.zip"><b>角色素材</b><span>Plush 动画 GIF · 服装抠图 · Flat 贴纸</span></a>
+<a href="downloads/hey-atu-fonts-tokens.zip"><b>字体与 Tokens</b><span>Departure Mono · JetBrains Mono · tokens.json / css</span></a>
+<a href="downloads/hey-atu-brand-kit-full.zip"><b>完整交付包</b><span>以上全部 + 真实界面截图 + 生成脚本（不含 PDF 和调研）</span></a>
+<a href="Hey-Atu-Brand-Guidelines.pdf"><b>规范 PDF</b><span>本页的 PDF 版</span></a>
+<a href="00-research/Hey-Atu-Research.html"><b>调研（内部）</b><span>Agent 公司视觉调研 · 上架渠道调研</span></a></div></section>
 <footer>Hey Atu · 品牌视觉规范 v1.0 · 所有 PNG 都由 SVG 或 HTML 渲染，源文件见 src/。界面截图取自 heyatu.com 线上演示（按当前 App 还原，示例内容）。</footer></body></html>'''
     write(f'{KIT}/Hey-Atu-Brand-Guidelines.html', html)
     with Renderer() as r:

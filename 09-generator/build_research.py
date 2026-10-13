@@ -43,6 +43,11 @@ def build():
         ['账号', '2023-11-13 以后注册的个人账号要先做封闭测试：至少 12 人连续 14 天；组织账号需要 D-U-N-S 编码', 'Apple Developer Program（审批中）'],
         ['审核访问', 'App access 声明：要给审核员可用的登录方式', '演示账号或演示模式（2.1）'],
         ['隐私', 'Data safety；能创建账号就必须能删除账号', 'App Privacy 隐私标签']])
+    prec = table(['先例', 'Logo（固定）', '角色（可变）', '我们借鉴了什么'], [
+        ['Meta Muse（2026-09-08 发布）', '蓝色手写体 “M”', '毛绒角色 Jolly：可以换装，发布会上穿过托加袍、戴月桂冠，广告里穿运动装', 'Logo 和角色分开；角色负责情绪和陪伴感，并且能换装'],
+        ['OpenAI dots（2026-09-29 发布）', '不沿用 OpenAI 自己的 logo', '一组软萌小角色，戴贝雷帽、领结、耳机等配件', '配件化的角色延展，对应我们的 Atu Flat'],
+        ['GitHub', 'Invertocat 剪影 logo，固定不变', 'Octocat 角色有大量换装版本（Octodex）', 'logo 永远不换装，换装只发生在角色层'],
+        ['Duolingo', '猫头鹰 Duo 的扁平形象', 'Duo 也有 3D 动画和实体毛绒周边', '同一个角色可以有扁平、动画、实物多种形态，靠固定特征保持一致']])
     sources = ''.join(f'<li>{s}</li>' for s in [
         'Google Play 预览素材规格：support.google.com/googleplay/android-developer/answer/9866151',
         'Google Play 图标规格：developer.android.com/google-play/resources/icon-design-specifications',
@@ -55,8 +60,8 @@ def build():
         'App Review Guidelines 2.3.3 / 2.3.7 / 2.3.10：developer.apple.com/app-store/review/guidelines',
         'Amazon Appstore 停止支持 Android 设备：developer.amazon.com，2025-02 公告',
         'Samsung Galaxy Store 自查清单：developer.samsung.com/galaxy-store/self-check-list-galaxy.html',
-        '官网截图：2026-10-13 抓取，仅供内部参考，不放进任何对外物料'])
-    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Hey Atu · 调研</title>
+        'Meta Muse 发布：about.fb.com/news/2026/09/introducing-muse-personal-ai-agent', 'Muse 角色 Jolly：wired.com（Meta’s Muse Is Adults-Only…）；axios.com/2026/09/25/ai-doom-meta-muse-mascot', 'OpenAI dots 角色：fastcompany.com/91615068；fortune.com/2026/10/02/meta-openai-ai-agent-mascots-jolly-dots-trust', 'GitHub Octodex 和 Duolingo 周边属于公开常识，这次没有重新抓取核对', '官网截图：2026-10-13 抓取，仅供内部参考，不放进任何对外物料'])
+    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 调研</title>
 <style>@font-face{{font-family:"Departure Mono";src:url("{F}/DepartureMono-Regular.ttf")}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-600.ttf")}}
 body{{margin:0;background:#F7F7F8;color:#18181B;font:16px/1.65 -apple-system,"PingFang SC",system-ui,sans-serif}}
 header{{background:#0E0E10;color:#F7F7F8;padding:80px 8vw 60px}}header h1{{font:400 52px/1.1 "Departure Mono";margin:0 0 12px}}header p{{color:#A1A1AA;margin:0}}
@@ -65,12 +70,14 @@ section{{padding:60px 8vw;border-top:1px solid #DEDEE3;max-width:1500px;margin:0
 table{{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px #DEDEE3}}th,td{{text-align:left;padding:10px 14px;border-bottom:1px solid #EEEEF0;vertical-align:top}}th{{font:600 12px JBM;color:#74747E;background:#FAFAFB}}
 .grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}figure{{margin:0}}figure img{{width:100%;border-radius:12px;box-shadow:0 0 0 1px #DEDEE3;display:block}}figcaption{{font:600 13px JBM;margin-top:6px;color:#4F4F58}}
 ul{{font-size:14px;color:#4F4F58}}.note{{font-size:14px;color:#74747E}}@media(max-width:900px){{.grid{{grid-template-columns:1fr 1fr}}}}</style><body>
+<div style="padding:12px 8vw;background:#0E0E10;font:500 13px JBM"><a href="../Hey-Atu-Brand-Guidelines.html" style="color:#E8954F;text-decoration:none">← 返回视觉规范</a></div>
 <header><div class="num" style="color:#D9803A">INTERNAL · 不对外</div><h1>Hey Atu · 调研</h1><p>2026-10 · 支撑品牌视觉规范和上架决策的外部调研，单独存放，不进入规范正文。</p></header>
 <section><div class="num">A</div><h2>科技 / Agent 公司的视觉怎么做</h2><p class="lede">截了 11 家公司的官网首屏，总结出下面 5 条做法，以及 Hey Atu 规范里是怎么落地的。</p>{principles}<h3>首屏截图</h3><div class="grid">{shots}</div></section>
 <section><div class="num">B</div><h2>上架渠道</h2><p class="lede"><b>Android 是操作系统，Google Play 是 Android 上的一个应用商店</b>，也是中国以外最主要的那个。同一个 Android 安装包可以发到多个 Android 商店。iOS 只有 App Store 一个商店（欧盟的替代商店这里不考虑）。</p>
 <h3>我们的 4 个渠道</h3>{channels}<h3>其他 Android 商店</h3>{other}</section>
 <section><div class="num">C</div><h2>同一个 App 在不同商店的物料：通行做法</h2><p class="lede">一套品牌和一条截图故事线，按每个商店的规格分别导出。下表是通行做法；具体数字已经和两家官方文档逐条核对过（2026-10-13）。</p>{practice}<h3>上架门槛（非视觉）</h3>{gates}</section>
-<section><div class="num">D</div><h2>资料来源</h2><ul>{sources}</ul></section></body></html>'''
+<section><div class="num">D</div><h2>吉祥物：Logo 固定，角色可以变</h2><p class="lede">AI agent 产品最近常见的做法是：logo 保持极简、固定不变，同时给产品配一个能换装、能做动作的角色，负责情绪和信任感。Hey Atu 规范里的「角色系统」就是按这个结构设计的。</p>{prec}</section>
+<section><div class="num">E</div><h2>资料来源</h2><ul>{sources}</ul></section></body></html>'''
     write(f'{R}/Hey-Atu-Research.html', html)
     with Renderer() as r:
         r.pg.set_viewport_size({'width': 1440, 'height': 900})
