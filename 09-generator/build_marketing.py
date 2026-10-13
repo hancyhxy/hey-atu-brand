@@ -100,11 +100,9 @@ def main():
             Image.open(out).convert('RGB').save(out)
         r.svg(open(f'{KIT}/01-logo/svg/atu-glyph-color.svg').read(), f'{M}/web/favicon-512.png', 512, 512)
     # favicon set from the outline glyph (works on light and dark tabs)
-    stickers = os.path.join(ROOT, '..', 'logo-directions/final/A7')
-    for f in ['remix-light.png', 'remix-dark.png']:
-        shutil.copy(os.path.join(stickers, f), f'{M}/stickers/' if os.path.isdir(f'{M}/stickers') else (os.makedirs(f'{M}/stickers') or f'{M}/stickers/'))
-    for f in glob.glob(os.path.join(stickers, 'tiles/*.png')):
-        os.makedirs(f'{M}/stickers/tiles', exist_ok=True); shutil.copy(f, f'{M}/stickers/tiles/')
+    # Flat stickers are generated from the current Mark (build_flat.py)
+    os.makedirs(f'{M}/stickers', exist_ok=True)
+    import build_flat; build_flat.main()
     print('marketing done')
 
 

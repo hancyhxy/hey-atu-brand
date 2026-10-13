@@ -17,7 +17,7 @@ def table(head, rows, cls='t'):
 def html():
     forms = f'''<div class="forms">
   <div class="form ink"><div class="label" style="color:#E8954F">形态 1 · Atu Mark</div><img src="{L}/svg/atu-glyph-color.svg" style="height:150px;margin:26px 0">
-    <p><b>数字符号</b>：6 个椭圆组成的扁平狗头。它是品牌的签名，<b>永远不换装</b>，只有 4 个状态。</p></div>
+    <p><b>数字符号</b>：头、双耳、眼斑和双眼组成的扁平狗头，耳朵和脸之间留缝。它是品牌的签名，<b>永远不换装</b>，只有 4 个状态。</p></div>
   <div class="form ink"><div class="label" style="color:#E8954F">形态 2 · Atu Flat</div><img src="{C}/flat-stickers/tiles/focus-dark.png" style="height:150px;margin:26px 0;border-radius:18px">
     <p><b>扁平角色</b>：由 Mark 派生，可以加小配件。只用于贴纸、表情和插画，<b>不能当 logo 用</b>。</p></div>
   <div class="form ink"><div class="label" style="color:#E8954F">形态 3 · Atu Plush</div><img src="{C}/plush-outfits/dog-wave-vest.webp" style="height:150px;margin:26px 0">
@@ -25,7 +25,7 @@ def html():
 
     dna = table(['', '固定不变（三种形态共用）', 'Mark / Flat', 'Plush'], [
         ['耳朵', '两只焦糖色耳朵', '左耳上扬、右耳下垂（经过符号化）', '两只都自然下垂，毛绒质感'],
-        ['眼斑', '<b>画面右侧那只眼睛</b>被焦糖色斑块包住', '一条连续的椭圆弧', '毛绒斑块，边缘柔和'],
+        ['眼斑', '<b>画面右侧那只眼睛</b>被焦糖色斑块包住', '一条连续的平滑曲线', '毛绒斑块，边缘柔和'],
         ['眼睛', '两只黑眼睛', '竖椭圆，没有高光', '圆形，有高光'],
         ['脸', '白色头部', '<b>没有鼻子、嘴巴、腮红</b>', '有棕色鼻子、微笑的嘴、粉色腮红'],
         ['颜色', '焦糖 · 白 · 黑', '用品牌色值：#D9803A / #FFFFFF / #0E0E10', '真实材质颜色，接近焦糖色就可以，不要求精确色值'],
