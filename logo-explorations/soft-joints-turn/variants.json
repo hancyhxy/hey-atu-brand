@@ -1,0 +1,100 @@
+[
+ {
+  "id": "00",
+  "title": "现行规范（对照）",
+  "note": "硬拼接，正脸",
+  "files": {
+   "outline": "svg/atu-00-outline.svg",
+   "outline-zl": "svg/atu-00-outline-zl.svg",
+   "outline-zr": "svg/atu-00-outline-zr.svg",
+   "line": "svg/atu-00-line.svg",
+   "line-zl": "svg/atu-00-line-zl.svg",
+   "line-zr": "svg/atu-00-line-zr.svg",
+   "color": "svg/atu-00-color.svg"
+  }
+ },
+ {
+  "id": "J1",
+  "title": "连接处极小弧",
+  "note": "弧半径约 0.6 倍线宽：笔尖顺过去",
+  "files": {
+   "outline": "svg/atu-J1-outline.svg",
+   "outline-zl": "svg/atu-J1-outline-zl.svg",
+   "outline-zr": "svg/atu-J1-outline-zr.svg",
+   "line": "svg/atu-J1-line.svg",
+   "line-zl": "svg/atu-J1-line-zl.svg",
+   "line-zr": "svg/atu-J1-line-zr.svg",
+   "color": "svg/atu-J1-color.svg"
+  }
+ },
+ {
+  "id": "J2",
+  "title": "连接处小弧",
+  "note": "弧半径约 1.1 倍线宽：能看出转折是圆的",
+  "files": {
+   "outline": "svg/atu-J2-outline.svg",
+   "outline-zl": "svg/atu-J2-outline-zl.svg",
+   "outline-zr": "svg/atu-J2-outline-zr.svg",
+   "line": "svg/atu-J2-line.svg",
+   "line-zl": "svg/atu-J2-line-zl.svg",
+   "line-zr": "svg/atu-J2-line-zr.svg",
+   "color": "svg/atu-J2-color.svg"
+  }
+ },
+ {
+  "id": "T1",
+  "title": "J1 + 微侧 6°",
+  "note": "五官和耳朵跟着转，脸颊轻轻鼓一点",
+  "files": {
+   "outline": "svg/atu-T1-outline.svg",
+   "outline-zl": "svg/atu-T1-outline-zl.svg",
+   "outline-zr": "svg/atu-T1-outline-zr.svg",
+   "line": "svg/atu-T1-line.svg",
+   "line-zl": "svg/atu-T1-line-zl.svg",
+   "line-zr": "svg/atu-T1-line-zr.svg",
+   "color": "svg/atu-T1-color.svg"
+  }
+ },
+ {
+  "id": "T2",
+  "title": "J1 + 侧 10° + 脸颊弧",
+  "note": "左下脸颊鼓出一道弧",
+  "files": {
+   "outline": "svg/atu-T2-outline.svg",
+   "outline-zl": "svg/atu-T2-outline-zl.svg",
+   "outline-zr": "svg/atu-T2-outline-zr.svg",
+   "line": "svg/atu-T2-line.svg",
+   "line-zl": "svg/atu-T2-line-zl.svg",
+   "line-zr": "svg/atu-T2-line-zr.svg",
+   "color": "svg/atu-T2-color.svg"
+  }
+ },
+ {
+  "id": "T3",
+  "title": "J1 + 侧 10° + 小新式脸颊",
+  "note": "脸颊鼓出，上方轻收一点腰",
+  "files": {
+   "outline": "svg/atu-T3-outline.svg",
+   "outline-zl": "svg/atu-T3-outline-zl.svg",
+   "outline-zr": "svg/atu-T3-outline-zr.svg",
+   "line": "svg/atu-T3-line.svg",
+   "line-zl": "svg/atu-T3-line-zl.svg",
+   "line-zr": "svg/atu-T3-line-zr.svg",
+   "color": "svg/atu-T3-color.svg"
+  }
+ },
+ {
+  "id": "T4",
+  "title": "J2 + 侧 14° + 小新式脸颊",
+  "note": "侧得更明显，作为上限参考",
+  "files": {
+   "outline": "svg/atu-T4-outline.svg",
+   "outline-zl": "svg/atu-T4-outline-zl.svg",
+   "outline-zr": "svg/atu-T4-outline-zr.svg",
+   "line": "svg/atu-T4-line.svg",
+   "line-zl": "svg/atu-T4-line-zl.svg",
+   "line-zr": "svg/atu-T4-line-zr.svg",
+   "color": "svg/atu-T4-color.svg"
+  }
+ }
+]
