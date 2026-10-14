@@ -2,6 +2,9 @@
 
 Units: master units (the 03 v2 build).
 v2.0 (2026-10-13): the glyph is the product-approved hand-drawn dog, smoothed (version A).
+v2.1 (2026-10-15): the same dog turned slightly (about 6 deg) to the viewer's left: eyes and
+patch follow a sphere, ears follow their roots, the lower-left cheek is a little fuller.
+Line work and joins are unchanged. Derived by logo-explorations/soft-joints-turn/export_s1.py.
 Head, ears, eye patch and eyes are smooth closed curves stored in glyph_shapes.json.
 Each part is still a separate shape layered as before (head, patch clipped to head,
 right ear, left ear, eyes); no fillets at the joins; strokes and gaps grow outward.

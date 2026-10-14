@@ -69,11 +69,17 @@ def head_turned(head, phi, cheek, waist):
     return affinity.translate(Polygon(pts).buffer(0), sh * 0.25, 0)
 
 
+# Pinned to the glyph as it was when this exploration ran (v2.0, front face), so the
+# page stays reproducible after S1 became the guideline glyph (v2.1).
+_V20 = json.load(open(os.path.join(HERE, 'glyph_shapes_v2.0.json')))
+_P = lambda k: Polygon(_V20[k]).buffer(0)
+
+
 def turned_shapes(phi=0.0, cheek=0.0, waist=0.0, as_is=False):
     """as_is: the current shapes untouched (reference 00). Otherwise the patch is also
     taken out to the head outline, so no white hairline shows between patch and line."""
-    head, lear, rear, patch = (s.poly for s in (G.HEAD, G.LEAR, G.REAR, G.PATCH))
-    eyes = [e.poly for e in G.EYES]
+    head, lear, rear, patch = (_P(k) for k in ('head', 'lear', 'rear', 'patch'))
+    eyes = [Polygon(e).buffer(0) for e in _V20['eyes']]
     if as_is:
         return dict(head=head, lear=lear, rear=rear, patch=patch, eyes=eyes)
     f = lambda x, y: (sphere_x(x, phi), y)

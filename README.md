@@ -1,4 +1,9 @@
-# Hey Atu 品牌交付包 v1.3（2026-10）
+# Hey Atu 品牌交付包 v1.4（2026-10）
+
+> v1.4（2026-10-15）：
+> - 狗头微微侧向画面左边（约 6°）：眼睛、眼斑和耳朵跟着转，左下脸颊略鼓，不再是正圆的正脸。线条粗细和耳朵与头的接法不变。
+> - 方案来自 `logo-explorations/soft-joints-turn/` 的 S1；几何由 `export_s1.py` 写入 `09-generator/glyph_shapes.json`。
+> - 所有 Logo、App 图标、状态图、贴纸、商店和宣发物料、规范 HTML / PDF 和下载包已按新几何重新生成。
 
 > v1.3（2026-10-14）：
 > - App 图标里的狗头放大：方形图标狗宽从图标宽的 70% 改为 84%（左右边距 15% → 8%），耳朵仍完整；iOS（默认 / Dark / Tinted）、浅色和焦糖配色、Google Play 512、Android 旧版和圆形启动图标同步放大。Android adaptive 图标仍受 66dp 安全区限制，不变。
