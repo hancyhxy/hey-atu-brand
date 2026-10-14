@@ -172,6 +172,8 @@ def doc(layers, bg=None, vb=VB):
 # id, title (zh), note, turn (deg, negative = viewer's left), cheek, waist, r_sil, r_ink
 VARIANTS = [
     ('00', '现行规范（对照）', '硬拼接，正脸', 0, 0, 0, 0, 0),
+    ('S1', '现行 + 微侧 6°', '线条和转角保持现行，只把脸微侧（同 T1 的侧法）', -6, 0.05, 0.0, 0, 0),
+    ('S2', '现行 + 侧 10° + 小新式脸颊', '线条和转角保持现行，侧脸同 T3', -10, 0.07, 0.035, 0, 0),
     ('J1', '一笔转角 · 小', '线的中心线转弯半径 = 0.8 倍线宽；内外两条边同心，线宽不变', 0, 0, 0, 11.5, 4),
     ('J2', '一笔转角 · 中', '中心线转弯半径 = 1.3 倍线宽', 0, 0, 0, 19, 5),
     ('T1', 'J1 + 微侧 6°', '五官和耳朵跟着转，脸颊轻轻鼓一点', -6, 0.05, 0.0, 11.5, 4),
@@ -220,11 +222,11 @@ section{background:#fff;border-radius:12px;padding:10px;margin-bottom:10px;min-w
 h2{font-size:16px;margin:0}
 .note{color:#777;margin:0 0 8px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.zoom{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}
+.zoom{margin-top:6px}
 figure{margin:0;min-width:0}
 figure img{display:block;width:100%;height:auto;border-radius:8px;outline:1px solid #0001}
 figcaption{font-size:11px;color:#888;text-align:center}
-@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid figure:first-child{grid-column:1/-1}.zoom{grid-template-columns:repeat(2,minmax(0,1fr))}body{padding:8px}section{padding:8px}}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid figure:first-child{grid-column:1/-1}body{padding:8px}section{padding:8px}}
 </style></head><body><main>
 <h1>阿图 · 线条软化探索</h1>
 <ul class="lead">
@@ -252,17 +254,28 @@ def render_png(meta):
                 pg.screenshot(path=os.path.join(HERE, out))
                 m['files'][k + '.png'] = out
         b.close()
+    # the four joint close-ups go into one 2 x 2 sheet per variant (fewer preview files)
+    from PIL import Image
+    for m in meta:
+        ks = ['outline-zl', 'outline-zr', 'line-zl', 'line-zr']
+        sheet = Image.new('RGB', (2 * 360 + 6, 2 * 270 + 6), (236, 236, 236))
+        for i, k in enumerate(ks):
+            fp = os.path.join(HERE, m['files'].pop(k + '.png'))
+            sheet.paste(Image.open(fp).convert('RGB'), ((i % 2) * 366, (i // 2) * 276))
+            os.remove(fp)
+        out = f"png/atu-{m['id']}-zoom.png"
+        sheet.save(os.path.join(HERE, out))
+        m['files']['zoom.png'] = out
 
 
 def build_page(meta):
     cards = []
     for m in meta:
-        f = {k: m['files'][k + '.png'] for k in m['files'] if not k.endswith('.png')}
+        f = {k[:-4]: v for k, v in m['files'].items() if k.endswith('.png')}
         main = ''.join(f'<figure><img src="{f[k]}" alt="{m["id"]} {cap}" width="760" height="576"><figcaption>{cap}</figcaption></figure>'
                        for k, cap in (('outline', '描边版'), ('line', '线条版'), ('color', '彩色深底')))
-        zoom = ''.join(f'<figure><img src="{f[k]}" alt="{m["id"]} {cap}" width="360" height="270"><figcaption>{cap}</figcaption></figure>'
-                       for k, cap in (('outline-zl', '描边 · 左耳下'), ('outline-zr', '描边 · 右耳上'),
-                                      ('line-zl', '线条 · 左耳下'), ('line-zr', '线条 · 右耳上')))
+        zoom = (f'<figure><img src="{f["zoom"]}" alt="{m["id"]} 转角放大" width="726" height="546">'
+                '<figcaption>转角放大：上排描边版（左耳下 · 右耳上），下排线条版</figcaption></figure>')
         cards.append(f'<section id="v-{m["id"]}"><h2>{m["id"]} · {m["title"]}</h2><p class="note">{m["note"]}</p>'
                      f'<div class="grid">{main}</div><div class="zoom">{zoom}</div></section>')
     open(os.path.join(HERE, 'index.html'), 'w').write(PAGE_HEAD + '\n'.join(cards) + '\n</main></body></html>\n')

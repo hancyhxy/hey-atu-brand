@@ -14,6 +14,34 @@
   }
  },
  {
+  "id": "S1",
+  "title": "现行 + 微侧 6°",
+  "note": "线条和转角保持现行，只把脸微侧（同 T1 的侧法）",
+  "files": {
+   "outline": "svg/atu-S1-outline.svg",
+   "outline-zl": "svg/atu-S1-outline-zl.svg",
+   "outline-zr": "svg/atu-S1-outline-zr.svg",
+   "line": "svg/atu-S1-line.svg",
+   "line-zl": "svg/atu-S1-line-zl.svg",
+   "line-zr": "svg/atu-S1-line-zr.svg",
+   "color": "svg/atu-S1-color.svg"
+  }
+ },
+ {
+  "id": "S2",
+  "title": "现行 + 侧 10° + 小新式脸颊",
+  "note": "线条和转角保持现行，侧脸同 T3",
+  "files": {
+   "outline": "svg/atu-S2-outline.svg",
+   "outline-zl": "svg/atu-S2-outline-zl.svg",
+   "outline-zr": "svg/atu-S2-outline-zr.svg",
+   "line": "svg/atu-S2-line.svg",
+   "line-zl": "svg/atu-S2-line-zl.svg",
+   "line-zr": "svg/atu-S2-line-zr.svg",
+   "color": "svg/atu-S2-color.svg"
+  }
+ },
+ {
   "id": "J1",
   "title": "一笔转角 · 小",
   "note": "线的中心线转弯半径 = 0.8 倍线宽；内外两条边同心，线宽不变",
