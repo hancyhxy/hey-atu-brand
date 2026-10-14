@@ -7,6 +7,9 @@ from PIL import Image
 
 A = os.path.join(KIT, '02-app-icon')
 BG_DARK = '#0E0E10'
+# v1.3: dog width / icon width on square app icons (was 0.70; fuller on the Home Screen).
+# Ears stay whole: 8% side margin, clear of the iOS / Play corner masks.
+ICON_FRAC = 0.84
 
 x0, y0, x1, y1 = bbox()
 GW, GH = x1 - x0, y1 - y0
@@ -23,14 +26,14 @@ def placed(body, size, width_frac=None, radius=None, dy=0.0):
     return f'<g transform="translate({tx:.3f} {ty:.3f}) scale({s:.5f})">{body}</g>', s, tx, ty
 
 
-def square_icon(size=1024, bg=BG_DARK, frac=0.70, body=None, round_r=None):
+def square_icon(size=1024, bg=BG_DARK, frac=ICON_FRAC, body=None, round_r=None):
     g, *_ = placed(body or color_body(pid='i'), size, frac, dy=0.01)
     rect = (f'<rect width="{size}" height="{size}" rx="{round_r}" fill="{bg}"/>' if round_r is not None
             else (f'<rect width="{size}" height="{size}" fill="{bg}"/>' if bg else ''))
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}" width="{size}" height="{size}">{rect}{g}</svg>'
 
 
-def circle_icon(size, bg=BG_DARK, frac=0.62):
+def circle_icon(size, bg=BG_DARK, frac=0.74):
     g, *_ = placed(color_body(pid='c'), size, frac, dy=0.01)
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {size} {size}"><circle cx="{size/2}" cy="{size/2}" r="{size/2}" fill="{bg}"/>{g}</svg>'
 
@@ -109,13 +112,13 @@ def main():
     # SVG sources for icons
     svgs = {
         f'{A}/svg/app-icon-dark-1024.svg': square_icon(1024),
-        f'{A}/svg/app-icon-light-1024.svg': square_icon(1024, '#F7F7F8', 0.70, outline_body(pid='o')),
-        f'{A}/svg/app-icon-caramel-1024.svg': square_icon(1024, CARAMEL, 0.70, f'<path fill="#FFFFFF" fill-rule="evenodd" d="{poly_d(mono_shape())}"/>'),
+        f'{A}/svg/app-icon-light-1024.svg': square_icon(1024, '#F7F7F8', ICON_FRAC, outline_body(pid='o')),
+        f'{A}/svg/app-icon-caramel-1024.svg': square_icon(1024, CARAMEL, ICON_FRAC, f'<path fill="#FFFFFF" fill-rule="evenodd" d="{poly_d(mono_shape())}"/>'),
         f'{A}/svg/android-adaptive-foreground-432.svg': f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108"><g transform="translate({tx:.3f} {ty:.3f}) scale({s:.5f})">{color_body(pid="f")}</g></svg>',
         f'{A}/svg/android-adaptive-monochrome-432.svg': f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108"><g transform="translate({tx:.3f} {ty:.3f}) scale({s:.5f})"><path fill="#000" fill-rule="evenodd" d="{poly_d(mono_shape())}"/></g></svg>',
         f'{A}/svg/android-notification-24.svg': f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g transform="translate({ntx:.3f} {nty:.3f}) scale({ns:.5f})"><path fill="#fff" fill-rule="evenodd" d="{ntf_d}"/></g></svg>',
         f'{A}/svg/ios-dark-1024.svg': square_icon(1024, None),
-        f'{A}/svg/ios-tinted-1024.svg': square_icon(1024, '#000000', 0.70, color_body(head='#FFFFFF', car='#8A8A8A', ink='#000000', pid='t')),
+        f'{A}/svg/ios-tinted-1024.svg': square_icon(1024, '#000000', ICON_FRAC, color_body(head='#FFFFFF', car='#8A8A8A', ink='#000000', pid='t')),
     }
     for p, t in {**files, **svgs}.items():
         write(p, t)
@@ -129,12 +132,12 @@ def main():
         for k in ['dark', 'light', 'caramel']:
             r.svg(svgs[f'{A}/svg/app-icon-{k}-1024.svg'], f'{A}/png/app-icon-{k}-1024.png', 1024, 1024)
         # Play store icon: full square, no rounding, no shadow
-        r.svg(square_icon(512, BG_DARK, 0.68), f'{KIT}/03-stores/google-play/01-app-icon/play-icon-512.png', 512, 512)
+        r.svg(square_icon(512, BG_DARK, ICON_FRAC), f'{KIT}/03-stores/google-play/01-app-icon/play-icon-512.png', 512, 512)
         # Android legacy launcher + round + adaptive layers as PNG
         dens = {'mdpi': 1, 'hdpi': 1.5, 'xhdpi': 2, 'xxhdpi': 3, 'xxxhdpi': 4}
         for dname, m in dens.items():
             L = round(48 * m)
-            r.svg(square_icon(L, BG_DARK, 0.66, round_r=L * 0.18), f'{res}/mipmap-{dname}/ic_launcher.png', L, L)
+            r.svg(square_icon(L, BG_DARK, ICON_FRAC, round_r=L * 0.18), f'{res}/mipmap-{dname}/ic_launcher.png', L, L)
             r.svg(circle_icon(L), f'{res}/mipmap-{dname}/ic_launcher_round.png', L, L)
             F = round(108 * m)
             r.svg(svgs[f'{A}/svg/android-adaptive-foreground-432.svg'], f'{res}/mipmap-{dname}/ic_launcher_foreground.png', F, F)
@@ -144,6 +147,10 @@ def main():
     # iOS: drop alpha on the primary icon (App Store requirement)
     im = Image.open(f'{ios}/AppIcon-1024.png').convert('RGB'); im.save(f'{ios}/AppIcon-1024.png')
     im = Image.open(f'{ios}/AppIcon-1024-tinted.png').convert('L'); im.save(f'{ios}/AppIcon-1024-tinted.png')
+    # AI directories / Google sign-in consent: same opaque icon, resized
+    for n in (1024, 512, 120):
+        im = Image.open(f'{ios}/AppIcon-1024.png').convert('RGB')
+        (im if n == 1024 else im.resize((n, n), Image.LANCZOS)).save(f'{KIT}/03-stores/ai-directories/hey-atu-icon-{n}.png')
     p = f'{KIT}/03-stores/google-play/01-app-icon/play-icon-512.png'
     Image.open(p).convert('RGBA').save(p)  # 32-bit PNG as Play requires
     write(f'{ios}/Contents.json', json.dumps({

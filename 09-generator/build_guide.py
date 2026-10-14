@@ -100,7 +100,7 @@ def build():
     S_.append(sec(11, '图像风格', '以产品界面为主角，Atu 偶尔客串。整体是科技工具的气质，不做咖啡馆、生活方式那一类摆拍。',
         f'''<div class="cols2"><div class="card"><h4>✓ 这样用</h4><ul><li>真实 App 界面（本包 <code>08-source/app-screens/</code>，浅色和深色都有）。</li><li>玩偶只用穿抓绒马甲的那只，抠图，放在纯色或点阵底上。</li><li>一张图只讲一件事，大标题加一张界面。</li></ul><div class="row"><img src="{SRC}/website/dog-wave-vest.webp" style="height:180px"><img src="{SRC}/app-screens/light-updates-03.png" style="height:180px;border-radius:20px"></div></div>
         <div class="card"><h4>✕ 不要这样</h4><ul><li>咖啡、拿铁、面条、绿植这类生活道具，以及暖色滤镜。</li><li>图库照片、人物手持手机、手指点击。</li><li>同一画面里塞多套服装的玩偶，或者 AI 生成的伪界面。</li></ul><div class="row" style="opacity:.55;filter:grayscale(.3)"><img src="{SRC}/website/dog-latte.webp" style="height:180px"><img src="{SRC}/website/dog-noodles.webp" style="height:180px"></div><p class="note">官网上这些素材可以继续用，但新的宣发物料不再采用。</p></div></div>'''))
-    S_.append(sec(12, 'App 图标与系统触点', '图标统一是 Ink 底加彩色狗头。Android 用 adaptive icon，并且提供 monochrome 层，所以支持 Android 13 起的主题图标。',
+    S_.append(sec(12, 'App 图标与系统触点', '图标统一是 Ink 底加彩色狗头。方形图标里狗头宽度占图标宽度的 <b>84%</b>，左右各留 8%，耳朵完整，不出血。Android 用 adaptive icon，并且提供 monochrome 层，所以支持 Android 13 起的主题图标。',
         f'<img class="wide" src="{X}/hey-atu-android-touchpoints.png"><img class="wide" src="{X}/hey-atu-android-icon-masks.png"><div class="cols2"><img class="wide" src="{X}/hey-atu-ios-touchpoints.png"><div>' +
         '''<table class="t"><tr><th>交付物</th><th>文件</th></tr><tr><td>Android adaptive（矢量）</td><td><code>android/res/drawable/ic_launcher_foreground.xml</code> + <code>ic_launcher_monochrome.xml</code> + <code>values/ic_launcher_background.xml</code></td></tr>
         <tr><td>Android 旧版启动图标</td><td><code>mipmap-mdpi…xxxhdpi/ic_launcher(.png|_round.png)</code> 48–192px</td></tr><tr><td>通知小图标</td><td><code>drawable/ic_stat_atu.xml</code> + <code>drawable-*/ic_stat_atu.png</code> 24–96px，纯白透明底</td></tr>
@@ -134,7 +134,7 @@ def build():
         <tr><td>10-character</td><td>Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸</td><td>GIF / WebP / PNG</td></tr><tr><td>07-fonts-and-tokens</td><td>字体（OFL 授权）、tokens.json / tokens.css</td><td>TTF / JSON / CSS</td></tr><tr><td>08-source</td><td>真实 App 界面截图（浅色 / 深色）、官网素材、玩偶状态 GIF</td><td>PNG / WebP / GIF</td></tr></table>'''))
 
     toc = ''.join(f'<a href="#s{i}">{i:02d} {t}</a>' for i, t in enumerate(TITLES, 1))
-    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 品牌视觉规范 v1.2</title>
+    html = f'''<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex"><title>Hey Atu · 品牌视觉规范 v1.3</title>
 <style>
 @font-face{{font-family:"Departure Mono";src:url("{F}/DepartureMono-Regular.ttf")}}
 @font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-400.ttf");font-weight:400}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-500.ttf");font-weight:500}}@font-face{{font-family:JBM;src:url("{F}/JetBrainsMono-600.ttf");font-weight:600}}
@@ -190,7 +190,7 @@ code{{word-break:break-all}}p,li,td{{overflow-wrap:anywhere}}
 }}
 </style><body>
 <nav class="topnav"><b>Hey Atu · Brand</b><a href="#s1">视觉规范</a><a href="#downloads">下载素材</a><a href="Hey-Atu-Brand-Guidelines.pdf">PDF</a><a href="00-research/Hey-Atu-Research.html">调研（内部）</a></nav>
-<header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.2</span></h1>
+<header class="cover"><img src="{L}/svg/atu-lockup-horizontal-on-dark.svg" style="height:64px"><h1>品牌视觉规范<br><span class="acc">v1.3</span></h1>
 <div style="color:#A1A1AA;font:500 15px JBM">Brand guidelines · 2026-10 · 交付产品团队 · Google Play / App Store 上架</div><nav class="toc">{toc}</nav></header>
 {''.join(S_)}
 <section id="downloads"><div class="num">↓</div><h2>下载素材</h2><p class="lede">按用途分包下载。所有 PNG 都由 SVG 渲染；要改图请改源文件，再重新生成。</p><div class="dl">
@@ -204,7 +204,7 @@ code{{word-break:break-all}}p,li,td{{overflow-wrap:anywhere}}
 <a href="downloads/hey-atu-brand-kit-full.zip"><b>完整交付包</b><span>以上全部 + 真实界面截图 + 生成脚本（不含 PDF 和调研）</span></a>
 <a href="Hey-Atu-Brand-Guidelines.pdf"><b>规范 PDF</b><span>本页的 PDF 版</span></a>
 <a href="00-research/Hey-Atu-Research.html"><b>调研（内部）</b><span>Agent 公司视觉调研 · 上架渠道调研</span></a></div></section>
-<footer>Hey Atu · 品牌视觉规范 v1.2 · 所有 PNG 都由 SVG 或 HTML 渲染，源文件见 09-generator/，一条命令重建：09-generator/build_all.sh。界面截图取自 heyatu.com 线上演示（按当前 App 还原，示例内容）。</footer></body></html>'''
+<footer>Hey Atu · 品牌视觉规范 v1.3 · 所有 PNG 都由 SVG 或 HTML 渲染，源文件见 09-generator/，一条命令重建：09-generator/build_all.sh。界面截图取自 heyatu.com 线上演示（按当前 App 还原，示例内容）。</footer></body></html>'''
     write(f'{KIT}/Hey-Atu-Brand-Guidelines.html', html)
     with Renderer() as r:
         r.pg.set_viewport_size({'width': 1440, 'height': 900})
