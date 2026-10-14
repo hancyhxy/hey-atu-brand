@@ -15,8 +15,8 @@
  },
  {
   "id": "J1",
-  "title": "连接处极小弧",
-  "note": "弧半径约 0.6 倍线宽：笔尖顺过去",
+  "title": "一笔转角 · 小",
+  "note": "线的中心线转弯半径 = 0.8 倍线宽；内外两条边同心，线宽不变",
   "files": {
    "outline": "svg/atu-J1-outline.svg",
    "outline-zl": "svg/atu-J1-outline-zl.svg",
@@ -29,8 +29,8 @@
  },
  {
   "id": "J2",
-  "title": "连接处小弧",
-  "note": "弧半径约 1.1 倍线宽：能看出转折是圆的",
+  "title": "一笔转角 · 中",
+  "note": "中心线转弯半径 = 1.3 倍线宽",
   "files": {
    "outline": "svg/atu-J2-outline.svg",
    "outline-zl": "svg/atu-J2-outline-zl.svg",

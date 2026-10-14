@@ -1,4 +1,5 @@
 """Exploration (branch explore/soft-joints-turn): softer Atu line work.
+v2: joins are drawn as one stroke of constant width (rounded centre line, concentric edges).
 
 Does not touch geom.py or any guideline asset. Two ideas, tried alone and together:
   1. Soft joins: where the ears meet the head, the line turns through a very small arc,
@@ -68,10 +69,12 @@ def head_turned(head, phi, cheek, waist):
     return affinity.translate(Polygon(pts).buffer(0), sh * 0.25, 0)
 
 
-def turned_shapes(phi=0.0, cheek=0.0, waist=0.0):
+def turned_shapes(phi=0.0, cheek=0.0, waist=0.0, as_is=False):
+    """as_is: the current shapes untouched (reference 00). Otherwise the patch is also
+    taken out to the head outline, so no white hairline shows between patch and line."""
     head, lear, rear, patch = (s.poly for s in (G.HEAD, G.LEAR, G.REAR, G.PATCH))
     eyes = [e.poly for e in G.EYES]
-    if not phi:
+    if as_is:
         return dict(head=head, lear=lear, rear=rear, patch=patch, eyes=eyes)
     f = lambda x, y: (sphere_x(x, phi), y)
     head2 = head_turned(head, phi, cheek, waist)
@@ -85,7 +88,7 @@ def turned_shapes(phi=0.0, cheek=0.0, waist=0.0):
     def to_outline(x, y, extra=12.0):
         dx, dy = x - CX, y - CY; r = math.hypot(dx, dy)
         hit = ring.intersection(LineString([(CX, CY), (CX + dx / r * 2000, CY + dy / r * 2000)]))
-        R = max(math.hypot(q.x - CX, q.y - CY) for q in getattr(hit, 'geoms', [hit]))
+        R = max(math.hypot(qx - CX, qy - CY) for g in getattr(hit, 'geoms', [hit]) for qx, qy in g.coords)
         k = (R + extra) / r
         return CX + dx * k, CY + dy * k
     inner = head.buffer(-4, **J)
@@ -104,26 +107,45 @@ def turned_shapes(phi=0.0, cheek=0.0, waist=0.0):
 
 
 # ---------- drawing ----------
-def outline_svg(S, r_sil, r_ink):
-    """Outline mark: outward silhouette line + ear lines over the face; soft joins = closing."""
+def stroke_ring(sil, lw, rc):
+    """One-stroke outline of `sil`, grown outward, width lw everywhere.
+    The pen's centre line (sil grown by lw/2) is rounded at every inward corner with radius
+    rc, then both edges are offset lw/2 from that centre line: inside and outside of each
+    turn are concentric arcs (radii rc - lw/2 and rc + lw/2), so the width never changes.
+    rc = 0 keeps the current hard join. Returns (ink ring, inner edge region)."""
+    if not rc:
+        return sil.buffer(lw, **J).difference(sil), sil
+    centre = closing(sil.buffer(lw / 2, **J), rc)
+    inner = centre.buffer(-lw / 2, **J)
+    return centre.buffer(lw / 2, **J).difference(inner), inner
+
+
+def outline_svg(S, rc, rf):
+    """Outline mark: outward silhouette stroke + ear lines over the face.
+    rc: centre-line radius of the turn where ear and head meet (0 = current hard join).
+    rf: tip radius of the thin white wedge where an ear line meets the outline."""
     head, lear, rear = S['head'], S['lear'], S['rear']
     ears = unary_union([lear, rear])
-    sil = closing(unary_union([head, ears]), r_sil)
-    ring = sil.buffer(STROKE, **J).difference(sil)
-    earlines = unary_union([e.buffer(EAR_LINE, **J).difference(e) for e in (lear, rear)]).intersection(sil)
-    ink = unary_union([ring, earlines])
-    # soft joins only fill the face side of a joint; the caramel ear keeps its own shape
-    ink = unary_union([ink, closing(ink, r_ink).difference(ears)]) if r_ink else ink
-    patch = S['patch'].intersection(head).difference(ears)
+    sil = unary_union([head, ears])
+    ring, inner = stroke_ring(sil, STROKE, rc)
+    ear_fill = ears.intersection(inner)
+    face = inner.difference(ears.buffer(EAR_LINE, **J))
+    face = opening(face, rf)                     # wedge tips end in a small round, not a needle
+    outer = unary_union([ring, inner])
+    ink = outer.difference(face).difference(ear_fill)
+    if not rc:                                   # current construction, unchanged
+        earlines = unary_union([e.buffer(EAR_LINE, **J).difference(e) for e in (lear, rear)]).intersection(sil)
+        ink = unary_union([ring, earlines])
+        face = sil
+    patch = S['patch'].intersection(head).intersection(face).difference(ears)
     eyes = unary_union(S['eyes'])
-    return [(WHITE, sil), (CARAMEL, patch), (CARAMEL, ears.intersection(sil)), (INK, ink), (INK, eyes)], sil
+    return [(WHITE, face), (CARAMEL, patch), (CARAMEL, ear_fill), (INK, ink.intersection(outer)), (INK, eyes)], inner
 
 
-def line_svg(S, r_sil):
-    sil = closing(unary_union([S['head'], S['lear'], S['rear']]), r_sil)
-    lw = 18.0 * 0.8
-    ring = sil.buffer(lw, **J).difference(sil)
-    return [(INK, unary_union([ring, unary_union(S['eyes'])]))], sil
+def line_svg(S, rc):
+    sil = unary_union([S['head'], S['lear'], S['rear']])
+    ring, inner = stroke_ring(sil, 18.0 * 0.8, rc)
+    return [(INK, unary_union([ring, unary_union(S['eyes'])]))], inner
 
 
 def color_svg(S, r_sil):
@@ -150,12 +172,12 @@ def doc(layers, bg=None, vb=VB):
 # id, title (zh), note, turn (deg, negative = viewer's left), cheek, waist, r_sil, r_ink
 VARIANTS = [
     ('00', '现行规范（对照）', '硬拼接，正脸', 0, 0, 0, 0, 0),
-    ('J1', '连接处极小弧', '弧半径约 0.6 倍线宽：笔尖顺过去', 0, 0, 0, 9, 7),
-    ('J2', '连接处小弧', '弧半径约 1.1 倍线宽：能看出转折是圆的', 0, 0, 0, 16, 12),
-    ('T1', 'J1 + 微侧 6°', '五官和耳朵跟着转，脸颊轻轻鼓一点', -6, 0.05, 0.0, 9, 7),
-    ('T2', 'J1 + 侧 10° + 脸颊弧', '左下脸颊鼓出一道弧', -10, 0.06, 0.0, 9, 7),
-    ('T3', 'J1 + 侧 10° + 小新式脸颊', '脸颊鼓出，上方轻收一点腰', -10, 0.07, 0.035, 9, 7),
-    ('T4', 'J2 + 侧 14° + 小新式脸颊', '侧得更明显，作为上限参考', -14, 0.065, 0.03, 16, 12),
+    ('J1', '一笔转角 · 小', '线的中心线转弯半径 = 0.8 倍线宽；内外两条边同心，线宽不变', 0, 0, 0, 11.5, 4),
+    ('J2', '一笔转角 · 中', '中心线转弯半径 = 1.3 倍线宽', 0, 0, 0, 19, 5),
+    ('T1', 'J1 + 微侧 6°', '五官和耳朵跟着转，脸颊轻轻鼓一点', -6, 0.05, 0.0, 11.5, 4),
+    ('T2', 'J1 + 侧 10° + 脸颊弧', '左下脸颊鼓出一道弧', -10, 0.06, 0.0, 11.5, 4),
+    ('T3', 'J1 + 侧 10° + 小新式脸颊', '脸颊鼓出，上方轻收一点腰', -10, 0.07, 0.035, 11.5, 4),
+    ('T4', 'J2 + 侧 14° + 小新式脸颊', '侧得更明显，作为上限参考', -14, 0.065, 0.03, 19, 5),
 ]
 
 
@@ -163,7 +185,7 @@ def build():
     os.makedirs(os.path.join(HERE, 'svg'), exist_ok=True)
     meta = []
     for vid, title, note, deg, cheek, waist, rs, ri in VARIANTS:
-        S = turned_shapes(math.radians(deg), cheek, waist)
+        S = turned_shapes(math.radians(deg), cheek, waist, as_is=(vid == '00'))
         files = {}
         for kind, (layers, _), bg in [
             ('outline', outline_svg(S, rs, ri), '#F7F7F8'),
@@ -207,7 +229,7 @@ figcaption{font-size:11px;color:#888;text-align:center}
 <h1>阿图 · 线条软化探索</h1>
 <ul class="lead">
 <li>分支 <code>explore/soft-joints-turn</code>，现行规范和所有物料都没动。</li>
-<li><b>连接处小弧</b>：耳朵和头相交的地方，线条像笔尖顺势弯过去，转一个很小的弧，不再是硬拼接的尖角。</li>
+<li><b>一笔转角</b>（第二版）：先把笔的中心线在耳朵和头的交点处转成小圆弧，再从中心线向两侧各让出半个线宽。转角的内外两条边是同心圆弧，线宽始终不变，不再有尖角或方形的痕迹。J1/J2 同时补上了眼斑和轮廓线之间的白缝。</li>
 <li><b>微侧脸</b>：脸朝画面左边转一点。眼睛、眼斑、耳朵跟着转；左下脸颊鼓出一道弧，像蜡笔小新的脸，不再是正圆。</li>
 <li>每组：描边版 · 线条版（刺绣）· 彩色深底；下面是两个连接处的放大。</li>
 </ul>
