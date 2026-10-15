@@ -4,6 +4,7 @@
 > - 狗头微微侧向画面左边（约 6°）：眼睛、眼斑和耳朵跟着转，左下脸颊略鼓，不再是正圆的正脸。线条粗细和耳朵与头的接法不变。
 > - 方案来自 `logo-explorations/soft-joints-turn/` 的 S1；几何由 `export_s1.py` 写入 `09-generator/glyph_shapes.json`。
 > - 所有 Logo、App 图标、状态图、贴纸、商店和宣发物料、规范 HTML / PDF 和下载包已按新几何重新生成。
+> - 修正：商店截图、宣发图和系统示意图在第一次 v1.4 构建里还是旧狗头（HTML 模板读的是未同步的旧素材），已补上同步步骤并重新生成。
 
 > v1.3（2026-10-14）：
 > - App 图标里的狗头放大：方形图标狗宽从图标宽的 70% 改为 84%（左右边距 15% → 8%），耳朵仍完整；iOS（默认 / Dark / Tinted）、浅色和焦糖配色、Google Play 512、Android 旧版和圆形启动图标同步放大。Android adaptive 图标仍受 66dp 安全区限制，不变。
@@ -62,7 +63,7 @@ android:roundIcon="@mipmap/ic_launcher_round"
 | 07-fonts-and-tokens | Departure Mono、JetBrains Mono（OFL 授权）、tokens.json / tokens.css |
 | 08-source | 真实 App 界面截图（浅色和深色，取自 heyatu.com 线上演示）、官网素材、玩偶状态 GIF |
 | 10-character | 角色素材：Plush 状态动画 GIF（App 现行版本）、各档服装的抠图、Flat 贴纸（SVG + PNG，深 / 浅） |
-| 09-generator | 生成脚本和 HTML 模板。改了几何参数或文案后运行 `09-generator/build_all.sh`，会重建全部素材、规范 HTML / PDF 和 `downloads/` 下载包 |
+| 09-generator | 生成脚本和 HTML 模板。改了几何参数或文案后运行 `ATU_KIT=<本仓库根目录> 09-generator/build_all.sh`，会重建全部素材、规范 HTML / PDF 和 `downloads/` 下载包。`run.sh` 固定 Playwright 1.63.0；`sync_kit.py` 会在渲染宣发、商店和示意图之前同步新生成的 Logo、图标和状态图 |
 
 ## 规则摘要
 
